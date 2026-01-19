@@ -1,4 +1,4 @@
-package uk.ac.bucks.willralph.user;
+package uk.ac.bucks.willralph.mmmidi.user;
 
 import javax.swing.*;
 
