@@ -1,22 +1,29 @@
-package uk.ac.bucks.willralph.user;
+package uk.ac.bucks.willralph.mmmidi.user;
+
+import javafx.scene.Parent;
+
+import javax.swing.*;
 
 public abstract class Page {
+    private final Parent layout;
     public enum Type {
         MAIN,
         SETTINGS,
         PLAYER
     }
     private final Type PAGE_TYPE;
-    Page(final Type pageType) {
+    public Page(final Type pageType) {
         PAGE_TYPE = pageType;
+        layout = setLayout();
     }
-    private void setTitle() {
+    private void setTitle(JFrame frame) {
         String title = "Master My midi";
         switch (PAGE_TYPE) {
             case SETTINGS -> title = "Settings";
             case PLAYER -> title = "MMM - Midi Player";
         }
-        // set title
+        frame.setTitle(title);
     }
-    protected abstract void setLayout();
+    protected abstract Parent setLayout();
+    public Parent getLayout() {return layout;}
 }
