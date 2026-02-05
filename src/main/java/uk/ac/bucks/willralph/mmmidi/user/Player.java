@@ -17,8 +17,9 @@ public class Player extends Page{
     protected Parent setLayout() {
         Label hello = new Label("Hello world");
         hello.textAlignmentProperty().setValue(TextAlignment.JUSTIFY);
-        hello.setAlignment(Pos.BASELINE_CENTER);
 
+        hello.setAlignment(Pos.BASELINE_CENTER);
+        hello.setMaxWidth(Double.MIN_VALUE);
         hello.setPadding(new Insets(20,20,20,20));
 
         BackgroundFill fill = new BackgroundFill(Color.BLUE, new CornerRadii(20), Insets.EMPTY);
