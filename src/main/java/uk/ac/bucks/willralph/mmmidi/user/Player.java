@@ -3,6 +3,7 @@ package uk.ac.bucks.willralph.mmmidi.user;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -15,16 +16,8 @@ public class Player extends Page{
 
     @Override
     protected Parent setLayout() {
-        Label hello = new Label("Hello world");
-        hello.textAlignmentProperty().setValue(TextAlignment.JUSTIFY);
 
-        hello.setAlignment(Pos.BASELINE_CENTER);
-        hello.setMaxWidth(Double.MIN_VALUE);
-        hello.setPadding(new Insets(20,20,20,20));
 
-        BackgroundFill fill = new BackgroundFill(Color.BLUE, new CornerRadii(20), Insets.EMPTY);
-        Background bg = new Background(fill);
-        hello.setBackground(bg);
 
         Border b = new Border(new BorderStroke(
                 Color.BLACK,
@@ -32,21 +25,56 @@ public class Player extends Page{
                 CornerRadii.EMPTY,
                 BorderStroke.THIN
         ));
-        bounds = new VBox(hello);
+
+        makeLayout(topBar(),notes(),new HBox());
         bounds.setBorder(b);
 
         return bounds;
 
     }
 
-    private void makeLayout() {
+    private HBox notes() {
+        BackgroundFill fill = new BackgroundFill(Color.gray(0.7), CornerRadii.EMPTY, Insets.EMPTY);
+        Background bg = new Background(fill);
 
+
+        Label hello = new Label("Hello world");
+        hello.textAlignmentProperty().setValue(TextAlignment.JUSTIFY);
+        hello.setBackground(bg);
+
+        HBox placeholder = new HBox(hello);
+        HBox.setHgrow(hello,Priority.ALWAYS);
+
+        hello.setAlignment(Pos.CENTER);
+        hello.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+        hello.setPadding(new Insets(20,20,20,20));
+        return placeholder;
+    }
+
+    private void makeLayout(HBox top, HBox notes, HBox piano) {
+        VBox.setVgrow(notes, Priority.ALWAYS);
+        bounds = new VBox(top,notes,piano);
+        bounds.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+        piano.getChildren().add(new Label("footer"));
     }
     private HBox topBar() {
         HBox nav = new HBox();
 
         nav.setAlignment(Pos.TOP_CENTER);
-        
+        nav.setPadding(new Insets(15, 12, 15, 12));
+        nav.setSpacing(10);
+        nav.setStyle("-fx-background-color: #336699;");
+
+        Button buttonCurrent = new Button("Settings");
+        buttonCurrent.setPrefSize(100, 20);
+
+        Label hello = new Label("Hello world");
+
+        Button buttonProjected = new Button("Close");
+        buttonProjected.setPrefSize(100, 20);
+
+        nav.getChildren().addAll(buttonCurrent, hello, buttonProjected);
+
         return nav;
     }
     public Player() {
