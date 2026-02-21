@@ -17,18 +17,7 @@ public class Player extends Page{
     @Override
     protected Parent setLayout() {
 
-
-
-        Border b = new Border(new BorderStroke(
-                Color.BLACK,
-                BorderStrokeStyle.DASHED,
-                CornerRadii.EMPTY,
-                BorderStroke.THIN
-        ));
-
-        makeLayout(topBar(),notes(),new HBox());
-        bounds.setBorder(b);
-
+        makeLayout(topBar(),notes(),new Piano(5));
         return bounds;
 
     }
@@ -36,7 +25,6 @@ public class Player extends Page{
     private HBox notes() {
         BackgroundFill fill = new BackgroundFill(Color.gray(0.7), CornerRadii.EMPTY, Insets.EMPTY);
         Background bg = new Background(fill);
-
 
         Label hello = new Label("Hello world");
         hello.textAlignmentProperty().setValue(TextAlignment.JUSTIFY);
@@ -51,8 +39,8 @@ public class Player extends Page{
         return placeholder;
     }
 
-    private void makeLayout(HBox top, HBox notes, HBox piano) {
-        VBox.setVgrow(notes, Priority.ALWAYS);
+    private void makeLayout(HBox top, HBox notes, Piano piano) {
+        VBox.setVgrow(notes, Priority.SOMETIMES);
         bounds = new VBox(top,notes,piano);
         bounds.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         piano.getChildren().add(new Label("footer"));
