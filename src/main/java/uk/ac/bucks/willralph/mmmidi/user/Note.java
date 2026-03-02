@@ -1,20 +1,23 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
+import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import uk.ac.bucks.willralph.mmmidi.App;
 
-public class Note extends HBox {
+public class Note extends VBox {
+    private final BorderWidths borderWidth = new BorderWidths(1);
     private final Border whiteNoteBorder = new Border(new BorderStroke(
             Color.BLACK,
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
-            BorderStroke.THIN
+            borderWidth
     ));
     private final Border blackNoteBorder = new Border(new BorderStroke(
-            Color.gray(0.4),
+            Color.gray(0.5),
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
-            BorderStroke.THIN
+            borderWidth
     ));
     enum Type {
         BLACK,
@@ -29,27 +32,44 @@ public class Note extends HBox {
            case BLACK -> blackStyle();
            case GAP -> invis();
        }
-        //this.setMinHeight(20);
 
-        HBox.setHgrow(this,Priority.ALWAYS);
+        this.setMaxWidth(Double.MAX_VALUE);
+
+        GridPane.setHgrow(this,Priority.ALWAYS);
+        GridPane.setVgrow(this,Priority.ALWAYS);
+
+        GridPane.setFillWidth(this,true);
+        GridPane.setFillHeight(this,true);
+
+        this.snapToPixelProperty().setValue(false);
+
+
     }
     private void whiteStyle() {
-        this.setMinWidth(10);
         this.setHeight(50.0);
         this.setBorder(whiteNoteBorder);
         this.setStyle("-fx-background-color: #FFFFFF;");
 
+        //this.setStyle("-pressed");
+
     }
     private void blackStyle() {
         total++;
-        this.setMinWidth(5);
+        //this.setMinWidth(5);
         this.setMaxHeight(60);
         this.setBorder(blackNoteBorder);
+
+        //halfWidth();
+
         this.setStyle("-fx-background-color: #000000;");
+    }
+    private void halfWidth() {
+        double width = (App.getSize().getWidth() / Piano.getTotalKeys())/2;
+        this.setMinWidth(width);
     }
     private void invis(){
         total++;
-        this.setMinWidth(5);
+        //halfWidth();
         //this.setBorder(whiteNoteBorder);
         this.setMaxHeight(60);
         System.out.println("---- I:"+total);

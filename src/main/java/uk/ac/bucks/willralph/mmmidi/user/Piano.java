@@ -1,30 +1,35 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import uk.ac.bucks.willralph.mmmidi.App;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Piano extends StackPane {
-    private final HBox blackNotes = new HBox();
-    private final HBox whiteNotes = new HBox();
+    public static final GridPane BLACK_NOTES = new GridPane();
+    public static final GridPane WHITE_NOTES = new GridPane();
 
     private final int WHITE_SIZE = 20;
     private final int BLACK_SIZE = 10;
 
     private List<Note> notes = new ArrayList<>();
 
-    private int octaves =5;
-    private final int OCTAVE=7; // repeats at 8
+    private static int octaves =5;
+    public final static int OCTAVE=7; // repeats at 8
 
     private static final Integer[] GAP_VALUES = new Integer[] {0,2,4,5,6,8,10,12,13};
     private final Set<Integer> BLACK_GAPS = new HashSet<>(Arrays.asList(GAP_VALUES));
 
     private final int DIV_COUNT = 14;
-    private boolean isGap() {
 
-        return BLACK_GAPS.contains(noteCount % DIV_COUNT);
+    private boolean endGap = false;
+    private boolean isGap() {
+        boolean result = BLACK_GAPS.contains(noteCount % DIV_COUNT) || endGap;
+        endGap = false;
+        return result;
     }
 
     Piano(int oct) {
@@ -36,8 +41,10 @@ public class Piano extends StackPane {
 
         generateOctaves();
 
-        this.getChildren().add(whiteNotes);
-        this.getChildren().add(blackNotes);
+        this.getChildren().add(WHITE_NOTES);
+        this.getChildren().add(BLACK_NOTES);
+
+        scale();
 
         this.setBorder(new Border( new BorderStroke(
                 Color.BLACK,
@@ -47,27 +54,40 @@ public class Piano extends StackPane {
         )));
         System.out.println(this.getHeight()+" "+this.getWidth());
     }
+    private void scale() {
+        WHITE_NOTES.setPrefWidth(App.getSize().getWidth());
+        BLACK_NOTES.setPrefWidth(App.getSize().getWidth());
+
+        GridPane.setHgrow(WHITE_NOTES,Priority.ALWAYS);
+        GridPane.setHgrow(BLACK_NOTES,Priority.ALWAYS);
+
+        RowConstraints constraints = new RowConstraints();
+        constraints.setValignment(VPos.TOP);
+        BLACK_NOTES.getRowConstraints().add(constraints);
+    }
     private int noteCount = 0;
+    private static final int END_NOTES_OFFSET = 1;
     private void generateOctaves() {
-        makeBlackGap();
-        for (int i=0; i < octaves*OCTAVE; i++) {
+        //makeBlackGap();
+        int keyboardLength = getTotalKeys();
+        for (int i=0; i < keyboardLength; i++) {
             System.out.println(i);
-            makeWhite();
+            makeWhite(i+1);
+            if(i+1==keyboardLength) endGap = true;
             makeBlack();
         }
-        //whiteNotes.getChildren().forEach(e -> {System.out.println("found");});
     }
     int whiCount = 0;
     private void makeBlackGap() {
-        blackNotes.getChildren().add(new Note(Note.Type.GAP));
+        BLACK_NOTES.addColumn(noteCount,new Note(Note.Type.GAP));
     }
-    private void makeWhite() {
+    private void makeWhite(int column) {
         noteCount++;
 
         makeBlackGap(); // for every white key there is a black gap
 
         Note newNote = new Note(Note.Type.WHITE);
-        whiteNotes.getChildren().add(newNote);
+        WHITE_NOTES.addColumn(column,newNote);
 
         notes.add(newNote);
 
@@ -83,7 +103,7 @@ public class Piano extends StackPane {
         Note.Type gap = !make ? Note.Type.GAP : Note.Type.BLACK;
 
         Note newNote = new Note(gap);
-        blackNotes.getChildren().add(newNote);
+        BLACK_NOTES.addColumn(noteCount,newNote);
 
         if(make) {
             notes.add(newNote);
@@ -91,12 +111,11 @@ public class Piano extends StackPane {
             System.out.println("B:"+blakCount);
         }
     }
-
-    public int getOctaves() {
-        return octaves;
+    public static int getTotalKeys() {
+        return octaves * OCTAVE + END_NOTES_OFFSET;
     }
 
     public void setOctaves(int octaves) {
-        this.octaves = octaves;
+        Piano.octaves = octaves;
     }
 }

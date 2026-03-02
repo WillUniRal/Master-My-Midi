@@ -7,6 +7,7 @@ import javafx.geometry.Dimension2D;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,8 +19,12 @@ public class App extends Application {
     //private JFrame frame = new JFrame("Master my midi");
 
     private static Scene currentScene;
-    private Dimension2D size;
+    private static Dimension2D size;
     public Stage mainStage;
+
+    public static Dimension2D getSize() {
+        return size;
+    }
 
     public App() {
         super();
@@ -30,10 +35,11 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         var label = new Label("This is a JavaFX Application");
+
         Page newPage = new Player();
         Parent layout = newPage.getLayout();
 
-        Scene scene = new Scene(layout, size.getWidth(), size.getHeight());
+        Scene scene = new Scene(layout, size.getWidth(), size.getHeight(),false, SceneAntialiasing.BALANCED);
         stage.setScene(scene);
 
         stage.show();
@@ -47,7 +53,7 @@ public class App extends Application {
     public void render() {
         // re render
     }
-    public void setDimension(int width,int height) {
+    public static void setDimension(int width,int height) {
         size = new Dimension2D(width, height);
     }
 }
