@@ -4,6 +4,8 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
+import javafx.scene.transform.Scale;
 import uk.ac.bucks.willralph.mmmidi.App;
 
 import java.util.*;
@@ -11,6 +13,13 @@ import java.util.*;
 public class Piano extends StackPane {
     public static final GridPane BLACK_NOTES = new GridPane();
     public static final GridPane WHITE_NOTES = new GridPane();
+
+    public static final Border blackBorder = new Border ( new BorderStroke(
+          Color.BLACK,
+          BorderStrokeStyle.SOLID,
+          CornerRadii.EMPTY,
+          BorderStroke.THIN
+    ));
 
     private final int WHITE_SIZE = 20;
     private final int BLACK_SIZE = 10;
@@ -46,12 +55,7 @@ public class Piano extends StackPane {
 
         scale();
 
-        this.setBorder(new Border( new BorderStroke(
-                Color.BLACK,
-                BorderStrokeStyle.SOLID,
-                CornerRadii.EMPTY,
-                BorderStroke.THIN
-        )));
+        this.setBorder(blackBorder);
         System.out.println(this.getHeight()+" "+this.getWidth());
     }
     private void scale() {
@@ -64,6 +68,16 @@ public class Piano extends StackPane {
         RowConstraints constraints = new RowConstraints();
         constraints.setValignment(VPos.TOP);
         BLACK_NOTES.getRowConstraints().add(constraints);
+
+        WHITE_NOTES.setSnapToPixel(false);
+        BLACK_NOTES.setSnapToPixel(false);
+        this.setSnapToPixel(false);
+
+        BLACK_NOTES.gridLinesVisibleProperty().setValue(true);
+        BLACK_NOTES.setMaxHeight(60);
+        BLACK_NOTES.setAlignment(Pos.TOP_CENTER);
+        this.setAlignment(Pos.TOP_CENTER);
+
     }
     private int noteCount = 0;
     private static final int END_NOTES_OFFSET = 1;
@@ -99,17 +113,13 @@ public class Piano extends StackPane {
         boolean make = !isGap();
         //if (Note.total == (octaves*DIV_COUNT)-1) return;
         noteCount++;
-
-        Note.Type gap = !make ? Note.Type.GAP : Note.Type.BLACK;
-
-        Note newNote = new Note(gap);
-        BLACK_NOTES.addColumn(noteCount,newNote);
-
         if(make) {
+            Note newNote = new Note(Note.Type.BLACK);
+            BLACK_NOTES.addColumn(noteCount,newNote);
             notes.add(newNote);
             blakCount++;
             System.out.println("B:"+blakCount);
-        }
+        } else BLACK_NOTES.addColumn(noteCount);
     }
     public static int getTotalKeys() {
         return octaves * OCTAVE + END_NOTES_OFFSET;

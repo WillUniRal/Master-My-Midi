@@ -3,6 +3,7 @@ package uk.ac.bucks.willralph.mmmidi;
 //import java.awt.*;
 //import javax.swing.*;
 import javafx.application.Application;
+import javafx.event.EventType;
 import javafx.geometry.Dimension2D;
 
 import javafx.scene.Parent;
@@ -22,6 +23,8 @@ public class App extends Application {
     private static Dimension2D size;
     public Stage mainStage;
 
+    private static Parent layout;
+
     public static Dimension2D getSize() {
         return size;
     }
@@ -29,25 +32,30 @@ public class App extends Application {
     public App() {
         super();
         setDimension(600,400);
+
+        changeLayout();
         mainStage = new Stage();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        stage.forceIntegerRenderScaleProperty().setValue(false);
         var label = new Label("This is a JavaFX Application");
 
-        Page newPage = new Player();
-        Parent layout = newPage.getLayout();
-
         Scene scene = new Scene(layout, size.getWidth(), size.getHeight(),false, SceneAntialiasing.BALANCED);
-        stage.setScene(scene);
+        stage.setForceIntegerRenderScale(false);
 
+        stage.setScene(scene);
         stage.show();
 
         stage.setOnCloseRequest(e -> {
             System.out.println("A close request has been made");
             System.exit(0);
         });
+    }
+    public static void changeLayout() {
+        Page newPage = new Player();
+        App.layout = newPage.getLayout();
     }
 
     public void render() {

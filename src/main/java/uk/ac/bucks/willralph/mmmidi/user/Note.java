@@ -1,5 +1,7 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -41,9 +43,8 @@ public class Note extends VBox {
         GridPane.setFillWidth(this,true);
         GridPane.setFillHeight(this,true);
 
-        this.snapToPixelProperty().setValue(false);
-
-
+        this.setOnMouseClicked( e -> showWidth());
+        this.setSnapToPixel(false);
     }
     private void whiteStyle() {
         this.setHeight(50.0);
@@ -74,6 +75,12 @@ public class Note extends VBox {
         this.setMaxHeight(60);
         System.out.println("---- I:"+total);
         this.setVisible(false);
+    }
+    private void showWidth() {
+        System.out.println(this.widthProperty());
+        System.out.println(this.isSnapToPixel());
+
+
     }
 
 }
