@@ -13,13 +13,10 @@ public class Player extends Page{
 
     private VBox bounds;
 
-
     @Override
     protected Parent setLayout() {
-
         makeLayout(topBar(),notes(),new Piano(5));
         return bounds;
-
     }
 
     private HBox notes() {
@@ -41,19 +38,12 @@ public class Player extends Page{
 
     private void makeLayout(HBox top, HBox notes, Piano piano) {
         VBox.setVgrow(notes, Priority.SOMETIMES);
-        notes.setStyle("-fx-snap-to-pixel: false;");
-        piano.setStyle("-fx-snap-to-pixel: false;");
 
         bounds = new VBox(top,notes,piano);
 
         bounds.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         bounds.setSnapToPixel(false);
         piano.setSnapToPixel(false);
-        GridPane grid = (GridPane) piano.getChildren().getFirst();
-        Note note = (Note) grid.getChildren().getFirst();
-
-        System.out.println("intergerScaling:"+bounds.isSnapToPixel()+"+"+piano.isSnapToPixel()+"+"+grid.isSnapToPixel());
-        System.out.println("lastChild:"+note.isSnapToPixel());
 
         piano.getChildren().add(new Label("footer"));
     }

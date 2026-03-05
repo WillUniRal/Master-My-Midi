@@ -3,6 +3,8 @@ package uk.ac.bucks.willralph.mmmidi;
 //import java.awt.*;
 //import javax.swing.*;
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Dimension2D;
 
@@ -11,8 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import uk.ac.bucks.willralph.mmmidi.user.Page;
+import uk.ac.bucks.willralph.mmmidi.user.Piano;
 import uk.ac.bucks.willralph.mmmidi.user.Player;
 
 
@@ -20,35 +24,39 @@ public class App extends Application {
     //private JFrame frame = new JFrame("Master my midi");
 
     private static Scene currentScene;
-    private static Dimension2D size;
-    public Stage mainStage;
+    private static Dimension2D size = setDimension(600,400);
+    public static Stage mainStage;
 
     private static Parent layout;
 
     public static Dimension2D getSize() {
+        if (mainStage!=null)
+            setDimension((int) mainStage.getWidth(), (int) mainStage.getHeight());
         return size;
     }
 
     public App() {
         super();
-        setDimension(600,400);
-
         changeLayout();
-        mainStage = new Stage();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.forceIntegerRenderScaleProperty().setValue(false);
-        var label = new Label("This is a JavaFX Application");
+        mainStage = stage;
+        mainStage.forceIntegerRenderScaleProperty().setValue(false);
 
         Scene scene = new Scene(layout, size.getWidth(), size.getHeight(),false, SceneAntialiasing.BALANCED);
-        stage.setForceIntegerRenderScale(false);
+        mainStage.setForceIntegerRenderScale(false);
 
-        stage.setScene(scene);
-        stage.show();
+        mainStage.setScene(scene);
 
-        stage.setOnCloseRequest(e -> {
+
+        System.out.println("screensize: "+Screen.getPrimary().getDpi());
+
+        mainStage.setOnShowing(e -> onShow());
+        mainStage.show();
+
+        mainStage.setOnCloseRequest(e -> {
             System.out.println("A close request has been made");
             System.exit(0);
         });
@@ -57,11 +65,21 @@ public class App extends Application {
         Page newPage = new Player();
         App.layout = newPage.getLayout();
     }
-
+    private void onShow() {
+        System.out.println("integerScaling: "+mainStage.forceIntegerRenderScaleProperty());
+        Piano.setListeners();
+        //mainStage.widthProperty().addListener();
+    }
+    int showings = 0;
     public void render() {
         // re render
+        System.out.println("show:"+showings);
     }
-    public static void setDimension(int width,int height) {
-        size = new Dimension2D(width, height);
+    public static Dimension2D setDimension(int width,int height) {
+        size = new Dimension2D(width,height);
+        if (mainStage!=null) {
+            mainStage.setWidth(width);
+            mainStage.setHeight(height);
+        } return size;
     }
 }

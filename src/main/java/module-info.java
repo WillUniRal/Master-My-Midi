@@ -3,6 +3,7 @@ module uk.ac.bucks.willralph.mmmidi {
     requires javafx.fxml;
     requires javafx.web;
     requires java.desktop;
+    requires javafx.graphics;
 
     //requires org.controlsfx.controls;
     //requires org.kordamp.ikonli.javafx;

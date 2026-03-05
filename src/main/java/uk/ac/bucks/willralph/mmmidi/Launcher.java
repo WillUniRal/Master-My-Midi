@@ -10,7 +10,6 @@ public class Launcher {
         // System.setProperty("glass.gtk.uiScale", "0.5");
         // System.setProperty("sun.java2d.uiScale", "1.5");
 
-
         Application.launch(App.class, args);
     }
 }

@@ -1,11 +1,10 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
-import javafx.scene.transform.Scale;
 import uk.ac.bucks.willralph.mmmidi.App;
 
 import java.util.*;
@@ -53,29 +52,45 @@ public class Piano extends StackPane {
         this.getChildren().add(WHITE_NOTES);
         this.getChildren().add(BLACK_NOTES);
 
-        scale();
+        initScale();
 
         this.setBorder(blackBorder);
         System.out.println(this.getHeight()+" "+this.getWidth());
-    }
-    private void scale() {
-        WHITE_NOTES.setPrefWidth(App.getSize().getWidth());
-        BLACK_NOTES.setPrefWidth(App.getSize().getWidth());
 
+    }
+    private static void scale() {
+        System.out.println("We scaling");
+        scaleChildNote(BLACK_NOTES.getChildren());
+        scaleChildNote(WHITE_NOTES.getChildren());
+    }
+    private static void scaleChildNote(ObservableList<Node> children) {
+        for(Node child : children) {
+            //int columnIndex = GridPane.getColumnIndex(child);
+            if (!(child instanceof Note currentNote)) break;
+            currentNote.setMinWidth(App.getSize().getWidth()/children.size());
+        }
+    }
+    public static void setListeners() {
+        return; //scaling disabled
+        //App.mainStage.getScene().widthProperty().addListener(e -> scale());
+    }
+    private void initScale() {
         GridPane.setHgrow(WHITE_NOTES,Priority.ALWAYS);
         GridPane.setHgrow(BLACK_NOTES,Priority.ALWAYS);
 
-        RowConstraints constraints = new RowConstraints();
-        constraints.setValignment(VPos.TOP);
-        BLACK_NOTES.getRowConstraints().add(constraints);
+        GridPane.setFillWidth(BLACK_NOTES,true);
+        //HGrow causes pixel snapping
 
         WHITE_NOTES.setSnapToPixel(false);
         BLACK_NOTES.setSnapToPixel(false);
         this.setSnapToPixel(false);
 
-        BLACK_NOTES.gridLinesVisibleProperty().setValue(true);
         BLACK_NOTES.setMaxHeight(60);
         BLACK_NOTES.setAlignment(Pos.TOP_CENTER);
+
+        WHITE_NOTES.setAlignment(Pos.TOP_CENTER);
+
+        // BLACK_NOTES.setGridLinesVisible(true); debug to see where the gaps are
         this.setAlignment(Pos.TOP_CENTER);
 
     }
@@ -83,13 +98,14 @@ public class Piano extends StackPane {
     private static final int END_NOTES_OFFSET = 1;
     private void generateOctaves() {
         //makeBlackGap();
-        int keyboardLength = getTotalKeys();
+        int keyboardLength = getTotalWhiteCount();
         for (int i=0; i < keyboardLength; i++) {
             System.out.println(i);
-            makeWhite(i+1);
+            makeWhite(i);
             if(i+1==keyboardLength) endGap = true;
             makeBlack();
         }
+        //makeBlackGap();
     }
     int whiCount = 0;
     private void makeBlackGap() {
@@ -97,18 +113,17 @@ public class Piano extends StackPane {
     }
     private void makeWhite(int column) {
         noteCount++;
-
         makeBlackGap(); // for every white key there is a black gap
 
         Note newNote = new Note(Note.Type.WHITE);
         WHITE_NOTES.addColumn(column,newNote);
 
         notes.add(newNote);
-
         whiCount++;
         System.out.println("W:"+whiCount);
     }
     int blakCount = 0;
+    private final static int GAP_BLACK_COUNT = 12;
     private void makeBlack() {
         boolean make = !isGap();
         //if (Note.total == (octaves*DIV_COUNT)-1) return;
@@ -119,9 +134,12 @@ public class Piano extends StackPane {
             notes.add(newNote);
             blakCount++;
             System.out.println("B:"+blakCount);
-        } else BLACK_NOTES.addColumn(noteCount);
+        } else makeBlackGap();
     }
-    public static int getTotalKeys() {
+    public static int getTotalGapBlackCount() {
+        return octaves * GAP_BLACK_COUNT + END_NOTES_OFFSET*2;
+    }
+    public static int getTotalWhiteCount() {
         return octaves * OCTAVE + END_NOTES_OFFSET;
     }
 

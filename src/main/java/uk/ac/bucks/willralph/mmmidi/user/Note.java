@@ -1,8 +1,5 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import uk.ac.bucks.willralph.mmmidi.App;
@@ -35,9 +32,9 @@ public class Note extends VBox {
            case GAP -> invis();
        }
 
-        this.setMaxWidth(Double.MAX_VALUE);
+        //this.setMaxWidth(Double.MAX_VALUE);
 
-        GridPane.setHgrow(this,Priority.ALWAYS);
+        //GridPane.setHgrow(this,Priority.ALWAYS);
         GridPane.setVgrow(this,Priority.ALWAYS);
 
         GridPane.setFillWidth(this,true);
@@ -50,36 +47,33 @@ public class Note extends VBox {
         this.setHeight(50.0);
         this.setBorder(whiteNoteBorder);
         this.setStyle("-fx-background-color: #FFFFFF;");
+        this.setMinWidth(App.getSize().getWidth()/Piano.getTotalWhiteCount());
+        //this.setMinWidth(0);
 
         //this.setStyle("-pressed");
 
     }
     private void blackStyle() {
         total++;
-        //this.setMinWidth(5);
+        this.setMinWidth(App.getSize().getWidth()/(Piano.getTotalWhiteCount()*2));
         this.setMaxHeight(60);
         this.setBorder(blackNoteBorder);
-
         //halfWidth();
 
         this.setStyle("-fx-background-color: #000000;");
     }
-    private void halfWidth() {
-        double width = (App.getSize().getWidth() / Piano.getTotalKeys())/2;
-        this.setMinWidth(width);
-    }
     private void invis(){
         total++;
-        //halfWidth();
-        //this.setBorder(whiteNoteBorder);
-        this.setMaxHeight(60);
+        this.setMinWidth(App.getSize().getWidth()/(Piano.getTotalWhiteCount()*2));
+        this.setMaxHeight(0);
         System.out.println("---- I:"+total);
         this.setVisible(false);
     }
     private void showWidth() {
         System.out.println(this.widthProperty());
         System.out.println(this.isSnapToPixel());
-
+        //App.mainStage.hide();
+        //App.mainStage.show();
 
     }
 
