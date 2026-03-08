@@ -23,16 +23,9 @@ public class Player extends Page{
         BackgroundFill fill = new BackgroundFill(Color.gray(0.7), CornerRadii.EMPTY, Insets.EMPTY);
         Background bg = new Background(fill);
 
-        Label hello = new Label("Hello world");
-        hello.textAlignmentProperty().setValue(TextAlignment.JUSTIFY);
-        hello.setBackground(bg);
+        HBox placeholder = new HBox();
+        placeholder.setBackground(bg);
 
-        HBox placeholder = new HBox(hello);
-        HBox.setHgrow(hello,Priority.ALWAYS);
-
-        hello.setAlignment(Pos.CENTER);
-        hello.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
-        hello.setPadding(new Insets(20,20,20,20));
         return placeholder;
     }
 
@@ -40,12 +33,9 @@ public class Player extends Page{
         VBox.setVgrow(notes, Priority.SOMETIMES);
 
         bounds = new VBox(top,notes,piano);
-
         bounds.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         bounds.setSnapToPixel(false);
         piano.setSnapToPixel(false);
-
-        piano.getChildren().add(new Label("footer"));
     }
     private HBox topBar() {
         HBox nav = new HBox();

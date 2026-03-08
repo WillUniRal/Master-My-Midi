@@ -1,13 +1,15 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
+import com.github.kwhat.jnativehook.GlobalScreen;
+import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import uk.ac.bucks.willralph.mmmidi.App;
-
 import java.util.*;
+import com.github.kwhat.jnativehook.mouse.NativeMouseInputListener;
 
 public class Piano extends StackPane {
     public static final GridPane BLACK_NOTES = new GridPane();
@@ -65,14 +67,25 @@ public class Piano extends StackPane {
     }
     private static void scaleChildNote(ObservableList<Node> children) {
         for(Node child : children) {
-            //int columnIndex = GridPane.getColumnIndex(child);
             if (!(child instanceof Note currentNote)) break;
-            currentNote.setMinWidth(App.getSize().getWidth()/children.size());
+            currentNote.stretch();
         }
     }
+    private static boolean appWidthChanged = false;
     public static void setListeners() {
-        return; //scaling disabled
-        //App.mainStage.getScene().widthProperty().addListener(e -> scale());
+        App.mainStage.getScene().widthProperty().addListener(e -> {
+            appWidthChanged = true;
+        });
+        NativeMouseInputListener mouseInputListener = new NativeMouseInputListener() {
+            @Override
+            public void nativeMouseReleased(NativeMouseEvent nativeEvent) {
+                NativeMouseInputListener.super.nativeMouseReleased(nativeEvent);
+                System.out.println("Mouse released");
+                if(appWidthChanged) scale();
+                appWidthChanged = false;
+            }
+        };
+        GlobalScreen.addNativeMouseListener(mouseInputListener);
     }
     private void initScale() {
         GridPane.setHgrow(WHITE_NOTES,Priority.ALWAYS);
@@ -136,10 +149,17 @@ public class Piano extends StackPane {
             System.out.println("B:"+blakCount);
         } else makeBlackGap();
     }
+
     public static int getTotalGapBlackCount() {
         return octaves * GAP_BLACK_COUNT + END_NOTES_OFFSET*2;
     }
-    public static int getTotalWhiteCount() {
+    public static double getWhiteWidth() {
+        return App.getSize().getWidth()/getTotalWhiteCount();
+    }
+    public static double getBlackWidth() {
+        return App.getSize().getWidth()/(getTotalWhiteCount()*2);
+    }
+    private static int getTotalWhiteCount() {
         return octaves * OCTAVE + END_NOTES_OFFSET;
     }
 
