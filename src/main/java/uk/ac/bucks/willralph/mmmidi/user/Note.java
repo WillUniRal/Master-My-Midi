@@ -24,58 +24,61 @@ public class Note extends VBox {
         GAP,
         WHITE
     }
-    static int total = 0;
+    private final Type COLOUR;
     Note(Type col) {
+        COLOUR = col;
 
         switch (col) {
            case WHITE -> whiteStyle();
            case BLACK -> blackStyle();
            case GAP -> invis();
        }
+        stretch();
 
-        //this.setMaxWidth(Double.MAX_VALUE);
-
-        //GridPane.setHgrow(this,Priority.ALWAYS);
         GridPane.setVgrow(this,Priority.ALWAYS);
-
         GridPane.setFillWidth(this,true);
         GridPane.setFillHeight(this,true);
 
-        this.setOnMouseClicked( e -> showWidth());
+        this.setOnMousePressed(e -> pressed());
+        this.setOnMouseReleased(e -> unpressed());
         this.setSnapToPixel(false);
     }
     private void whiteStyle() {
         this.setHeight(50.0);
         this.setBorder(whiteNoteBorder);
-        this.setStyle("-fx-background-color: #FFFFFF;");
-        this.setMinWidth(App.getSize().getWidth()/Piano.getTotalWhiteCount());
-        //this.setMinWidth(0);
-
-        //this.setStyle("-pressed");
+        this.setStyle(WHITE_COLOUR);
 
     }
     private void blackStyle() {
-        total++;
-        this.setMinWidth(App.getSize().getWidth()/(Piano.getTotalWhiteCount()*2));
+        this.setMinWidth(Piano.getBlackWidth());
         this.setMaxHeight(60);
         this.setBorder(blackNoteBorder);
-        //halfWidth();
+        this.setStyle(BLACK_COLOUR);
+    }
+    private final String WHITE_COLOUR = "-fx-background-color: #FFFFFF;";
+    private final String BLACK_COLOUR = "-fx-background-color: #000000;";
 
-        this.setStyle("-fx-background-color: #000000;");
+    public void stretch() {
+        if(COLOUR==Type.WHITE) {
+            this.setMinWidth(Piano.getWhiteWidth());
+        } else this.setMinWidth(Piano.getBlackWidth());
     }
     private void invis(){
-        total++;
-        this.setMinWidth(App.getSize().getWidth()/(Piano.getTotalWhiteCount()*2));
-        this.setMaxHeight(0);
-        System.out.println("---- I:"+total);
+        this.setMinWidth(Piano.getBlackWidth());
         this.setVisible(false);
     }
-    private void showWidth() {
-        System.out.println(this.widthProperty());
-        System.out.println(this.isSnapToPixel());
-        //App.mainStage.hide();
-        //App.mainStage.show();
-
+    private void pressed() {
+        if(COLOUR == Type.WHITE)
+            this.setStyle("-fx-background-color: #808080;");
+        else
+            this.setStyle("-fx-background-color: #404040;");
     }
+    private void unpressed() {
+        if (COLOUR == Type.WHITE)
+            this.setStyle(WHITE_COLOUR);
+        else
+            this.setStyle(BLACK_COLOUR);
+    }
+
 
 }
