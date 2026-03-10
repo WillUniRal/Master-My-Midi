@@ -6,12 +6,14 @@ import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import uk.ac.bucks.willralph.mmmidi.App;
+import javax.sound.midi.Instrument;
 
 import java.util.*;
 
 public class Piano extends StackPane {
     public static final GridPane BLACK_NOTES = new GridPane();
     public static final GridPane WHITE_NOTES = new GridPane();
+
 
     public static final Border blackBorder = new Border ( new BorderStroke(
           Color.BLACK,
@@ -83,7 +85,7 @@ public class Piano extends StackPane {
 
         WHITE_NOTES.setSnapToPixel(false);
         BLACK_NOTES.setSnapToPixel(false);
-        this.setSnapToPixel(false);
+        //this.setSnapToPixel(false);
 
         BLACK_NOTES.setMaxHeight(60);
         BLACK_NOTES.setAlignment(Pos.TOP_CENTER);

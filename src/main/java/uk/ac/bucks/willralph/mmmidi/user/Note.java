@@ -4,6 +4,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import uk.ac.bucks.willralph.mmmidi.App;
 
+
 public class Note extends VBox {
     private final BorderWidths borderWidth = new BorderWidths(1);
     private final Border whiteNoteBorder = new Border(new BorderStroke(
