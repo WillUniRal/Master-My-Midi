@@ -1,24 +1,28 @@
 package uk.ac.bucks.willralph.mmmidi;
 
-import uk.ac.bucks.willralph.mmmidi.user.Piano;
-
-import javax.imageio.IIOException;
 import javax.sound.midi.*;
-import javax.sound.midi.spi.SoundbankReader;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class SoundFont implements Soundbank {
-    private final File PIANO_MED_C3 = new File("C3.wav");
-    SoundFont() {
-        Instrument piano = setSoundBank(PIANO_MED_C3).getInstrument()
+    private final Instrument[] INSTRUMENTS;
+
+    public SoundFont() {
+        URL resource = getClass().getClassLoader().getResource("PianoSoundFont.sf2");
+        INSTRUMENTS = setSoundBank(resource).getInstruments();
+        for( Instrument instrument : INSTRUMENTS ) {
+            System.out.println("lololol"+instrument.getPatch().toString());
+        }
+
     }
-    private Soundbank setSoundBank(File file) {
+    private Soundbank setSoundBank(URL resource) {
         try {
-            return MidiSystem.getSoundbank(file);
+            return MidiSystem.getSoundbank(resource);
         } catch (IOException e) {
             throw new RuntimeException("Sound file");
         } catch (InvalidMidiDataException e) {
+            System.err.println(e.getMessage()+" boop "+e.getLocalizedMessage());
             throw new RuntimeException("Something midi happen oops");
         }
 
@@ -51,7 +55,7 @@ public class SoundFont implements Soundbank {
 
     @Override
     public Instrument[] getInstruments() {
-        return new Instrument[0];
+        return INSTRUMENTS;
     }
 
     @Override
