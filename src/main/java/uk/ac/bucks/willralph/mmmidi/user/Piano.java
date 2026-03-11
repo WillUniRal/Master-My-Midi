@@ -17,8 +17,7 @@ import uk.ac.bucks.willralph.mmmidi.SoundFont;
 public class Piano extends StackPane {
     public static final GridPane BLACK_NOTES = new GridPane();
     public static final GridPane WHITE_NOTES = new GridPane();
-    private final SoundFont sounds = new SoundFont();
-
+    public static final SoundFont sounds = new SoundFont();
 
     public static final Border blackBorder = new Border ( new BorderStroke(
           Color.BLACK,

@@ -7,6 +7,8 @@ import uk.ac.bucks.willralph.mmmidi.App;
 
 public class Note extends VBox {
     private final BorderWidths borderWidth = new BorderWidths(1);
+    private static int noteInt = 36;
+    private final int NOTE_VALUE;
     private final Border whiteNoteBorder = new Border(new BorderStroke(
             Color.BLACK,
             BorderStrokeStyle.SOLID,
@@ -31,8 +33,11 @@ public class Note extends VBox {
         switch (col) {
            case WHITE -> whiteStyle();
            case BLACK -> blackStyle();
-           case GAP -> invis();
+           case Type.GAP -> invis();
        }
+        NOTE_VALUE = noteInt;
+        if(col!=Type.GAP) noteInt++;
+
         stretch();
 
         GridPane.setVgrow(this,Priority.ALWAYS);
@@ -41,6 +46,14 @@ public class Note extends VBox {
 
         this.setOnMousePressed(e -> pressed());
         this.setOnMouseReleased(e -> unpressed());
+
+        /*
+        this.setOnDragDetected(e -> {
+            this.startFullDrag();
+        });
+        this.setOnMouseDragEntered(e -> pressed());
+         */
+
         this.setSnapToPixel(false);
     }
     private void whiteStyle() {
@@ -68,6 +81,7 @@ public class Note extends VBox {
         this.setVisible(false);
     }
     private void pressed() {
+        Piano.sounds.playNote(NOTE_VALUE,50,0);
         if(COLOUR == Type.WHITE)
             this.setStyle("-fx-background-color: #808080;");
         else

@@ -1,19 +1,30 @@
 package uk.ac.bucks.willralph.mmmidi;
 
 import javax.sound.midi.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 public class SoundFont implements Soundbank {
     private final Instrument[] INSTRUMENTS;
+    private final Soundbank BANK;
+    private final Synthesizer SYNTH;
 
+    public Instrument currentInstrument;
     public SoundFont() {
         URL resource = getClass().getClassLoader().getResource("PianoSoundFont.sf2");
-        INSTRUMENTS = setSoundBank(resource).getInstruments();
+        BANK = setSoundBank(resource);
+        INSTRUMENTS = BANK.getInstruments();
+        SYNTH = setSynthesizer();
+        initCurrentInstrument();
+    }
+    private void initCurrentInstrument() {
+        System.out.println("All available instruments");
         for( Instrument instrument : INSTRUMENTS ) {
-            System.out.println("lololol"+instrument.getPatch().toString());
+            System.out.println(instrument.getPatch().toString());
         }
+        currentInstrument = INSTRUMENTS[0];
+        SYNTH.loadInstrument(currentInstrument);
+        channels = SYNTH.getChannels();
 
     }
     private Soundbank setSoundBank(URL resource) {
@@ -27,20 +38,37 @@ public class SoundFont implements Soundbank {
         }
 
     }
+    private Synthesizer setSynthesizer() {
+        try {
+            Synthesizer synth = MidiSystem.getSynthesizer();
+            synth.open();
+            return synth;
+        } catch (MidiUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private MidiChannel[] channels;
+
+    public void playNote(int noteNumber, int velo, int channelIndex) {
+        channels[channelIndex].controlChange(64, 127); // sustain pedal
+        channels[channelIndex].noteOn(noteNumber,velo);
+        int val = channels[channelIndex].getController(64); // sustain pedal
+        System.out.println(val);
+    }
 
     @Override
     public String getName() {
-        return "Grand Piano";
+        return BANK.getName();
     }
 
     @Override
     public String getVersion() {
-        return "";
+        return BANK.getVersion();
     }
 
     @Override
     public String getVendor() {
-        return "";
+        return BANK.getVendor();
     }
 
     @Override
@@ -50,7 +78,7 @@ public class SoundFont implements Soundbank {
 
     @Override
     public SoundbankResource[] getResources() {
-        return new SoundbankResource[0];
+        return BANK.getResources();
     }
 
     @Override
