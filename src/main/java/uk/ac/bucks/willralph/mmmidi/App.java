@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import uk.ac.bucks.willralph.mmmidi.user.Page;
 import uk.ac.bucks.willralph.mmmidi.user.Piano;
 import uk.ac.bucks.willralph.mmmidi.user.Player;
+import uk.ac.bucks.willralph.mmmidi.user.Settings;
 
 
 public class App extends Application {
@@ -37,7 +38,7 @@ public class App extends Application {
 
     public App() {
         super();
-        changeLayout();
+        changeLayout(Page.Type.PLAYER);
     }
 
     @Override
@@ -61,9 +62,15 @@ public class App extends Application {
             System.exit(0);
         });
     }
-    public static void changeLayout() {
-        Page newPage = new Player();
+    public static void changeLayout(Page.Type type) {
+        Page newPage;
+        switch (type) {
+            case SETTINGS -> {newPage = new Settings();}
+            case PLAYER -> {newPage = new Player();}
+            default ->  {newPage = new Player();} // temporary
+        }
         App.layout = newPage.getLayout();
+
     }
     private void onShow() {
         System.out.println("integerScaling: "+mainStage.forceIntegerRenderScaleProperty());

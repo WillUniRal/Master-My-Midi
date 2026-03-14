@@ -12,4 +12,5 @@ module uk.ac.bucks.willralph.mmmidi {
 
     opens uk.ac.bucks.willralph.mmmidi to javafx.fxml;
     exports uk.ac.bucks.willralph.mmmidi;
+    exports uk.ac.bucks.willralph.mmmidi.user;
 }

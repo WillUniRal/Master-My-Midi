@@ -50,10 +50,8 @@ public class SoundFont implements Soundbank {
     private MidiChannel[] channels;
 
     public void playNote(int noteNumber, int velo, int channelIndex) {
-        channels[channelIndex].controlChange(64, 127); // sustain pedal
+        channels[channelIndex].controlChange(64, 127); // sustain pedal -- not doing anything
         channels[channelIndex].noteOn(noteNumber,velo);
-        int val = channels[channelIndex].getController(64); // sustain pedal
-        System.out.println(val);
     }
 
     @Override

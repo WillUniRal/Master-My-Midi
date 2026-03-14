@@ -13,11 +13,13 @@ import javax.sound.midi.Instrument;
 import java.util.*;
 import com.github.kwhat.jnativehook.mouse.NativeMouseInputListener;
 import uk.ac.bucks.willralph.mmmidi.SoundFont;
+import uk.ac.bucks.willralph.mmmidi.MidiConnection;
 
 public class Piano extends StackPane {
     public static final GridPane BLACK_NOTES = new GridPane();
     public static final GridPane WHITE_NOTES = new GridPane();
     public static final SoundFont sounds = new SoundFont();
+    private static final MidiConnection midiDevice = new MidiConnection();
 
     public static final Border blackBorder = new Border ( new BorderStroke(
           Color.BLACK,
@@ -84,7 +86,6 @@ public class Piano extends StackPane {
             @Override
             public void nativeMouseReleased(NativeMouseEvent nativeEvent) {
                 NativeMouseInputListener.super.nativeMouseReleased(nativeEvent);
-                System.out.println("Mouse released");
                 if(appWidthChanged) scale();
                 appWidthChanged = false;
             }
@@ -92,15 +93,12 @@ public class Piano extends StackPane {
         GlobalScreen.addNativeMouseListener(mouseInputListener);
     }
     private void initScale() {
-        GridPane.setHgrow(WHITE_NOTES,Priority.ALWAYS);
-        GridPane.setHgrow(BLACK_NOTES,Priority.ALWAYS);
 
         GridPane.setFillWidth(BLACK_NOTES,true);
         //HGrow causes pixel snapping
 
         WHITE_NOTES.setSnapToPixel(false);
         BLACK_NOTES.setSnapToPixel(false);
-        //this.setSnapToPixel(false);
 
         BLACK_NOTES.setMaxHeight(60);
         BLACK_NOTES.setAlignment(Pos.TOP_CENTER);
@@ -117,14 +115,12 @@ public class Piano extends StackPane {
         //makeBlackGap();
         int keyboardLength = getTotalWhiteCount();
         for (int i=0; i < keyboardLength; i++) {
-            System.out.println(i);
             makeWhite(i);
             if(i+1==keyboardLength) endGap = true;
             makeBlack();
         }
         //makeBlackGap();
     }
-    int whiCount = 0;
     private void makeBlackGap() {
         BLACK_NOTES.addColumn(noteCount,new Note(Note.Type.GAP));
     }
@@ -136,10 +132,7 @@ public class Piano extends StackPane {
         WHITE_NOTES.addColumn(column,newNote);
 
         notes.add(newNote);
-        whiCount++;
-        System.out.println("W:"+whiCount);
     }
-    int blakCount = 0;
     private final static int GAP_BLACK_COUNT = 12;
     private void makeBlack() {
         boolean make = !isGap();
@@ -149,8 +142,6 @@ public class Piano extends StackPane {
             Note newNote = new Note(Note.Type.BLACK);
             BLACK_NOTES.addColumn(noteCount,newNote);
             notes.add(newNote);
-            blakCount++;
-            System.out.println("B:"+blakCount);
         } else makeBlackGap();
     }
 

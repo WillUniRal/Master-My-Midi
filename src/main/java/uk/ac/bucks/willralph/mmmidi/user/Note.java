@@ -81,7 +81,7 @@ public class Note extends VBox {
         this.setVisible(false);
     }
     private void pressed() {
-        Piano.sounds.playNote(NOTE_VALUE,50,0);
+        Piano.sounds.playNote(NOTE_VALUE,120,0);
         if(COLOUR == Type.WHITE)
             this.setStyle("-fx-background-color: #808080;");
         else
