@@ -15,10 +15,12 @@ public class MidiConnection {
 
     private static final Info[] midiDevices;
     public static ArrayList<Info> inputDevices;
+    private static MidiDevice connectedMidi;
+    private static final MidiReceiver output = new MidiReceiver();
 
     private static ArrayList<Info> getAllAvailableDevices() {
         int devicesCount = 0;
-        ArrayList<Info> result = new ArrayList<Info>();
+        ArrayList<Info> result = new ArrayList<>();
         for(Info info : midiDevices) {
             MidiDevice device;
             try {device = MidiSystem.getMidiDevice(info); }
@@ -36,5 +38,21 @@ public class MidiConnection {
 
         }
         return result;
+    }
+    public static void openMidiConnection(Info info) {
+        connectedMidi = getConnectedMidiDevice(info);
+    }
+    private static MidiDevice getConnectedMidiDevice(Info info) {
+        MidiDevice result;
+        try {
+            result = MidiSystem.getMidiDevice(info);
+            result.open();
+            result.getTransmitter().setReceiver(output);
+        }
+        catch (MidiUnavailableException e)
+        {throw new RuntimeException(e);}
+
+        return result;
+
     }
 }

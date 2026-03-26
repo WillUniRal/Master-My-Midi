@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import uk.ac.bucks.willralph.mmmidi.App;
 
 public class Player extends Page{
 
@@ -47,6 +48,10 @@ public class Player extends Page{
 
         Button buttonCurrent = new Button("Settings");
         buttonCurrent.setPrefSize(100, 20);
+        buttonCurrent.setOnAction(e -> {
+            App.changeLayout(Type.SETTINGS);
+            App.setCurrentScene();
+        });
 
         Label hello = new Label("Hello world");
 

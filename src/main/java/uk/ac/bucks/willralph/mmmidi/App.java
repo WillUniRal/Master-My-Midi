@@ -44,13 +44,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
-        mainStage.forceIntegerRenderScaleProperty().setValue(false);
 
-        Scene scene = new Scene(layout, size.getWidth(), size.getHeight(),false, SceneAntialiasing.BALANCED);
-        mainStage.setForceIntegerRenderScale(false);
-
-        mainStage.setScene(scene);
-
+        setCurrentScene();
 
         System.out.println("screensize: "+Screen.getPrimary().getDpi());
 
@@ -61,6 +56,11 @@ public class App extends Application {
             System.out.println("A close request has been made");
             System.exit(0);
         });
+    }
+    public static void setCurrentScene() {
+        Scene scene = new Scene(layout, size.getWidth(), size.getHeight(),false, SceneAntialiasing.BALANCED);
+        mainStage.setForceIntegerRenderScale(false);
+        mainStage.setScene(scene);
     }
     public static void changeLayout(Page.Type type) {
         Page newPage;
