@@ -4,6 +4,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
 import java.util.ArrayList;
 
 public class MidiConnection {
@@ -16,7 +17,11 @@ public class MidiConnection {
     private static final Info[] midiDevices;
     public static ArrayList<Info> inputDevices;
     private static MidiDevice connectedMidi;
-    private static final MidiReceiver output = new MidiReceiver();
+    private static final Receiver output;
+
+    static {
+        output = SoundFont.synthReceiver();
+    }
 
     private static ArrayList<Info> getAllAvailableDevices() {
         int devicesCount = 0;

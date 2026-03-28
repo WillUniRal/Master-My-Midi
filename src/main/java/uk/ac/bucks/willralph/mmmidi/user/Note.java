@@ -2,13 +2,12 @@ package uk.ac.bucks.willralph.mmmidi.user;
 
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import uk.ac.bucks.willralph.mmmidi.App;
 
 
 public class Note extends VBox {
     private final BorderWidths borderWidth = new BorderWidths(1);
     private static int noteInt = 36;
-    private final int NOTE_VALUE;
+    private int value =0;
     private final Border whiteNoteBorder = new Border(new BorderStroke(
             Color.BLACK,
             BorderStrokeStyle.SOLID,
@@ -27,6 +26,16 @@ public class Note extends VBox {
         WHITE
     }
     private final Type COLOUR;
+    public int getValue(){
+        return value;
+    }
+    public void beginCount(int start) {
+        noteInt = start;
+    }
+    public void noteCount() {
+        value = noteInt;
+        noteInt++;
+    }
     Note(Type col) {
         COLOUR = col;
 
@@ -35,8 +44,8 @@ public class Note extends VBox {
            case BLACK -> blackStyle();
            case Type.GAP -> invis();
        }
-        NOTE_VALUE = noteInt;
-        if(col!=Type.GAP) noteInt++;
+
+        if(col!=Type.GAP) noteCount();
 
         stretch();
 
@@ -44,15 +53,8 @@ public class Note extends VBox {
         GridPane.setFillWidth(this,true);
         GridPane.setFillHeight(this,true);
 
-        this.setOnMousePressed(e -> pressed());
+        this.setOnMousePressed(e -> on());
         this.setOnMouseReleased(e -> unpressed());
-
-        /*
-        this.setOnDragDetected(e -> {
-            this.startFullDrag();
-        });
-        this.setOnMouseDragEntered(e -> pressed());
-         */
 
         this.setSnapToPixel(false);
     }
@@ -80,14 +82,18 @@ public class Note extends VBox {
         this.setMinWidth(Piano.getBlackWidth());
         this.setVisible(false);
     }
-    private void pressed() {
-        Piano.sounds.playNote(NOTE_VALUE,120,0);
+    private void on() {
+        Piano.sounds.playNote(value,120,0);
+        pressed();
+    }
+
+    public void pressed() {
         if(COLOUR == Type.WHITE)
             this.setStyle("-fx-background-color: #808080;");
         else
             this.setStyle("-fx-background-color: #404040;");
     }
-    private void unpressed() {
+    public void unpressed() {
         if (COLOUR == Type.WHITE)
             this.setStyle(WHITE_COLOUR);
         else

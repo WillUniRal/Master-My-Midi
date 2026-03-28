@@ -31,7 +31,7 @@ public class Piano extends StackPane {
     private final int WHITE_SIZE = 20;
     private final int BLACK_SIZE = 10;
 
-    private List<Note> notes = new ArrayList<>();
+
 
     private static int octaves =5;
     public final static int OCTAVE=7; // repeats at 8
@@ -55,7 +55,7 @@ public class Piano extends StackPane {
         this.setWidth(Double.MAX_VALUE);
         this.setHeight(100);
 
-        generateOctaves();
+        if(!initialized) generateOctaves();
 
         this.getChildren().add(WHITE_NOTES);
         this.getChildren().add(BLACK_NOTES);
@@ -65,6 +65,18 @@ public class Piano extends StackPane {
         this.setBorder(blackBorder);
         System.out.println(this.getHeight()+" "+this.getWidth());
 
+    }
+    public static HashMap<Integer, Note> noteMap = new HashMap<>();
+    public static void tune(Note note, int... start){
+        if (start.length>1) {
+            note.beginCount(start[0]);
+            noteMap.clear();
+        }
+        note.noteCount();
+        addNote(note);
+    }
+    private static void addNote(Note note) {
+        noteMap.put(note.getValue(),note);
     }
     private static void scale() {
         System.out.println("We scaling");
@@ -111,7 +123,9 @@ public class Piano extends StackPane {
     }
     private int noteCount = 0;
     private static final int END_NOTES_OFFSET = 1;
+    private static boolean initialized = false;
     private void generateOctaves() {
+        initialized = true;
         //makeBlackGap();
         int keyboardLength = getTotalWhiteCount();
         for (int i=0; i < keyboardLength; i++) {
@@ -131,7 +145,7 @@ public class Piano extends StackPane {
         Note newNote = new Note(Note.Type.WHITE);
         WHITE_NOTES.addColumn(column,newNote);
 
-        notes.add(newNote);
+        addNote(newNote);
     }
     private final static int GAP_BLACK_COUNT = 12;
     private void makeBlack() {
@@ -141,7 +155,7 @@ public class Piano extends StackPane {
         if(make) {
             Note newNote = new Note(Note.Type.BLACK);
             BLACK_NOTES.addColumn(noteCount,newNote);
-            notes.add(newNote);
+            addNote(newNote);
         } else makeBlackGap();
     }
 

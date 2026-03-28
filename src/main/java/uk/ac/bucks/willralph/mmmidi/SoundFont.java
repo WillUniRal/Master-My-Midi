@@ -7,14 +7,26 @@ import java.net.URL;
 public class SoundFont implements Soundbank {
     private final Instrument[] INSTRUMENTS;
     private final Soundbank BANK;
-    private final Synthesizer SYNTH;
+    private static final Synthesizer SYNTH;
+
+    static {
+        SYNTH = setSynthesizer();
+    }
+
+    public static MidiReceiver synthReceiver(){
+        try {
+            return new MidiReceiver(SYNTH.getReceiver());
+        } catch (MidiUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Instrument currentInstrument;
     public SoundFont() {
         URL resource = getClass().getClassLoader().getResource("PianoSoundFont.sf2");
         BANK = setSoundBank(resource);
         INSTRUMENTS = BANK.getInstruments();
-        SYNTH = setSynthesizer();
+
         initCurrentInstrument();
     }
     private void initCurrentInstrument() {
@@ -38,7 +50,7 @@ public class SoundFont implements Soundbank {
         }
 
     }
-    private Synthesizer setSynthesizer() {
+    private static Synthesizer setSynthesizer() {
         try {
             Synthesizer synth = MidiSystem.getSynthesizer();
             synth.open();
