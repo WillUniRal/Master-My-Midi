@@ -1,58 +1,43 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
-import com.github.kwhat.jnativehook.GlobalScreen;
-import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import uk.ac.bucks.willralph.mmmidi.App;
-import javax.sound.midi.Instrument;
 
 import java.util.*;
-import com.github.kwhat.jnativehook.mouse.NativeMouseInputListener;
+
 import uk.ac.bucks.willralph.mmmidi.SoundFont;
 import uk.ac.bucks.willralph.mmmidi.MidiConnection;
 
-public class Piano extends StackPane {
-    public static final GridPane BLACK_NOTES = new GridPane();
-    public static final GridPane WHITE_NOTES = new GridPane();
-    public static final SoundFont sounds = new SoundFont();
-    private static final MidiConnection midiDevice = new MidiConnection();
+public class Piano extends PianoGrid {
+    public static final SoundFont sounds = new SoundFont(); //k
+    private static final MidiConnection midiDevice = new MidiConnection(); //k
+    public final PianoVisualizer VISUALIZER = new PianoVisualizer();
 
-    public static final Border blackBorder = new Border ( new BorderStroke(
+    private final Border blackBorder = new Border ( new BorderStroke(
           Color.BLACK,
           BorderStrokeStyle.SOLID,
           CornerRadii.EMPTY,
           BorderStroke.THIN
     ));
 
-    private final int WHITE_SIZE = 20;
-    private final int BLACK_SIZE = 10;
-
-
-
-    private static int octaves =5;
-    public final static int OCTAVE=7; // repeats at 8
-
-    private static final Integer[] GAP_VALUES = new Integer[] {0,2,4,5,6,8,10,12,13};
-    private final Set<Integer> BLACK_GAPS = new HashSet<>(Arrays.asList(GAP_VALUES));
-
-    private final int DIV_COUNT = 14;
+    private static final Integer[] GAP_VALUES = new Integer[] {0,2,4,5,6,8,10,12,13}; //k
+    private final Set<Integer> BLACK_GAPS = new HashSet<>(Arrays.asList(GAP_VALUES)); //k
 
     private boolean endGap = false;
     private boolean isGap() {
+        int DIV_COUNT = 14;
         boolean result = BLACK_GAPS.contains(noteCount % DIV_COUNT) || endGap;
         endGap = false;
         return result;
     }
-
     Piano(int oct) {
+        super();
 
-        this.setMinHeight(100);
         octaves = oct;
+
         this.setWidth(Double.MAX_VALUE);
+        this.setMinHeight(100);
         this.setHeight(100);
 
         if(!initialized) generateOctaves();
@@ -75,55 +60,30 @@ public class Piano extends StackPane {
         note.noteCount();
         addNote(note);
     }
+    //k
     private static void addNote(Note note) {
         noteMap.put(note.getValue(),note);
     }
-    private static void scale() {
-        System.out.println("We scaling");
-        scaleChildNote(BLACK_NOTES.getChildren());
-        scaleChildNote(WHITE_NOTES.getChildren());
-    }
-    private static void scaleChildNote(ObservableList<Node> children) {
-        for(Node child : children) {
-            if (!(child instanceof Note currentNote)) break;
-            currentNote.stretch();
-        }
-    }
-    private static boolean appWidthChanged = false;
-    public static void setListeners() {
-        App.mainStage.getScene().widthProperty().addListener(e -> {
-            appWidthChanged = true;
-        });
-        NativeMouseInputListener mouseInputListener = new NativeMouseInputListener() {
-            @Override
-            public void nativeMouseReleased(NativeMouseEvent nativeEvent) {
-                NativeMouseInputListener.super.nativeMouseReleased(nativeEvent);
-                if(appWidthChanged) scale();
-                appWidthChanged = false;
-            }
-        };
-        GlobalScreen.addNativeMouseListener(mouseInputListener);
-    }
+
     private void initScale() {
 
         GridPane.setFillWidth(BLACK_NOTES,true);
-        //HGrow causes pixel snapping
-
+        //enabling HGrow will cause pixel snapping
         WHITE_NOTES.setSnapToPixel(false);
         BLACK_NOTES.setSnapToPixel(false);
 
         BLACK_NOTES.setMaxHeight(60);
-        BLACK_NOTES.setAlignment(Pos.TOP_CENTER);
 
+        BLACK_NOTES.setAlignment(Pos.TOP_CENTER);
         WHITE_NOTES.setAlignment(Pos.TOP_CENTER);
 
-        // BLACK_NOTES.setGridLinesVisible(true); debug to see where the gaps are
         this.setAlignment(Pos.TOP_CENTER);
-
+        // BLACK_NOTES.setGridLinesVisible(true); debug to see where the gaps are
     }
+    // will generate from this class to construct the visualizer
     private int noteCount = 0;
-    private static final int END_NOTES_OFFSET = 1;
     private static boolean initialized = false;
+    //k
     private void generateOctaves() {
         initialized = true;
         //makeBlackGap();
@@ -135,43 +95,44 @@ public class Piano extends StackPane {
         }
         //makeBlackGap();
     }
-    private void makeBlackGap() {
-        BLACK_NOTES.addColumn(noteCount,new Note(Note.Type.GAP));
+    @Override
+    protected void makeBlackGap(int... column) {
+        Note.Type type = Note.Type.GAP;
+        BLACK_NOTES.addColumn(noteCount,new Note(type,this));
+        //VISUALIZER.setCurrentNote(noteCount, new NoteQueue(type));
     }
-    private void makeWhite(int column) {
+    @Override
+    protected void makeWhite(int... column) {
+        Note.Type type = Note.Type.WHITE;
         noteCount++;
         makeBlackGap(); // for every white key there is a black gap
 
-        Note newNote = new Note(Note.Type.WHITE);
-        WHITE_NOTES.addColumn(column,newNote);
+        Note newNote = new Note(type,this);
+
+        WHITE_NOTES.addColumn(column[0],newNote);
+        //VISUALIZER.setCurrentNote(column[0],new NoteQueue(type));
 
         addNote(newNote);
     }
     private final static int GAP_BLACK_COUNT = 12;
-    private void makeBlack() {
+    @Override
+    protected void makeBlack(int... column) {
         boolean make = !isGap();
+        Note.Type type = Note.Type.BLACK;
         //if (Note.total == (octaves*DIV_COUNT)-1) return;
         noteCount++;
         if(make) {
-            Note newNote = new Note(Note.Type.BLACK);
+            Note newNote = new Note(type,this);
             BLACK_NOTES.addColumn(noteCount,newNote);
+            //VISUALIZER.setCurrentNote(noteCount,new NoteQueue(type));
             addNote(newNote);
         } else makeBlackGap();
     }
-
+    // this is needed for scaling in the Notes
+    private static final int END_NOTES_OFFSET = 1;
     public static int getTotalGapBlackCount() {
         return octaves * GAP_BLACK_COUNT + END_NOTES_OFFSET*2;
     }
-    public static double getWhiteWidth() {
-        return App.getSize().getWidth()/getTotalWhiteCount();
-    }
-    public static double getBlackWidth() {
-        return App.getSize().getWidth()/(getTotalWhiteCount()*2);
-    }
-    private static int getTotalWhiteCount() {
-        return octaves * OCTAVE + END_NOTES_OFFSET;
-    }
-
     public void setOctaves(int octaves) {
         Piano.octaves = octaves;
     }

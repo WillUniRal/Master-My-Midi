@@ -58,9 +58,11 @@ public class App extends Application {
         });
     }
     public static void setCurrentScene() {
+        mainStage.hide();
         Scene scene = new Scene(layout, size.getWidth(), size.getHeight(),false, SceneAntialiasing.BALANCED);
         mainStage.setForceIntegerRenderScale(false);
         mainStage.setScene(scene);
+        mainStage.show();
     }
     public static void changeLayout(Page.Type type) {
         Page newPage;

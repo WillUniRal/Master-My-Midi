@@ -62,7 +62,8 @@ public class SoundFont implements Soundbank {
     private MidiChannel[] channels;
 
     public void playNote(int noteNumber, int velo, int channelIndex) {
-        channels[channelIndex].controlChange(64, 127); // sustain pedal -- not doing anything
+        // sustain pedal, not working for my custom sound font
+        // channels[channelIndex].controlChange(64, 127);
         channels[channelIndex].noteOn(noteNumber,velo);
     }
 

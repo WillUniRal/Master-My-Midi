@@ -33,7 +33,6 @@ public class Settings extends Page {
         try {
             loader = new FXMLLoader(fxml);
             loader.setController(this);
-
             return loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);

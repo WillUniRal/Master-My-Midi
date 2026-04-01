@@ -16,7 +16,8 @@ public class Player extends Page{
 
     @Override
     protected Parent setLayout() {
-        makeLayout(topBar(),notes(),new Piano(5));
+        Piano piano = new Piano(5);
+        makeLayout(topBar(),notes(),piano);
         return bounds;
     }
 

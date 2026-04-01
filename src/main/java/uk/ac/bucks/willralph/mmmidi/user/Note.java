@@ -4,15 +4,16 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 
-public class Note extends VBox {
+public class Note extends NoteBox {
+    private final Piano PIANO;
     private final BorderWidths borderWidth = new BorderWidths(1);
     private static int noteInt = 36;
-    private int value =0;
+
     private final Border whiteNoteBorder = new Border(new BorderStroke(
             Color.BLACK,
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
-            borderWidth
+            BorderStroke.THIN
     ));
     private final Border blackNoteBorder = new Border(new BorderStroke(
             Color.gray(0.5),
@@ -20,15 +21,7 @@ public class Note extends VBox {
             CornerRadii.EMPTY,
             borderWidth
     ));
-    enum Type {
-        BLACK,
-        GAP,
-        WHITE
-    }
-    private final Type COLOUR;
-    public int getValue(){
-        return value;
-    }
+
     public void beginCount(int start) {
         noteInt = start;
     }
@@ -36,16 +29,12 @@ public class Note extends VBox {
         value = noteInt;
         noteInt++;
     }
-    Note(Type col) {
-        COLOUR = col;
+    Note(Type col,Piano piano) {
+        super(col);
+        PIANO = piano;
 
-        switch (col) {
-           case WHITE -> whiteStyle();
-           case BLACK -> blackStyle();
-           case Type.GAP -> invis();
-       }
-
-        if(col!=Type.GAP) noteCount();
+        callStyle();
+        if(COLOUR!=Type.GAP) noteCount();
 
         stretch();
 
@@ -58,14 +47,17 @@ public class Note extends VBox {
 
         this.setSnapToPixel(false);
     }
-    private void whiteStyle() {
+    @Override
+    protected void whiteStyle() {
+        System.out.println("bazinga");
         this.setHeight(50.0);
         this.setBorder(whiteNoteBorder);
         this.setStyle(WHITE_COLOUR);
 
     }
-    private void blackStyle() {
-        this.setMinWidth(Piano.getBlackWidth());
+    @Override
+    protected void blackStyle() {
+        this.setMinWidth(PIANO.getBlackWidth());
         this.setMaxHeight(60);
         this.setBorder(blackNoteBorder);
         this.setStyle(BLACK_COLOUR);
@@ -75,23 +67,28 @@ public class Note extends VBox {
 
     public void stretch() {
         if(COLOUR==Type.WHITE) {
-            this.setMinWidth(Piano.getWhiteWidth());
-        } else this.setMinWidth(Piano.getBlackWidth());
+            this.setMinWidth(PIANO.getWhiteWidth());
+        } else this.setMinWidth(PIANO.getBlackWidth());
     }
-    private void invis(){
-        this.setMinWidth(Piano.getBlackWidth());
+    @Override
+    protected void invis(){
+        this.setMinWidth(PIANO.getBlackWidth());
         this.setVisible(false);
     }
     private void on() {
         Piano.sounds.playNote(value,120,0);
         pressed();
     }
+    private void off() {
+        //Piano.sounds.stopNote(value,120,0);
+        unpressed();
+    }
 
     public void pressed() {
         if(COLOUR == Type.WHITE)
             this.setStyle("-fx-background-color: #808080;");
         else
-            this.setStyle("-fx-background-color: #404040;");
+            this.setStyle("-fx-background-color: #2565BA;");
     }
     public void unpressed() {
         if (COLOUR == Type.WHITE)
@@ -99,6 +96,4 @@ public class Note extends VBox {
         else
             this.setStyle(BLACK_COLOUR);
     }
-
-
 }
