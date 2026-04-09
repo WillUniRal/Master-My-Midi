@@ -76,7 +76,7 @@ public class App extends Application {
     }
     private void onShow() {
         System.out.println("integerScaling: "+mainStage.forceIntegerRenderScaleProperty());
-        Piano.setListeners();
+        Player.setListeners();
         //mainStage.widthProperty().addListener();
     }
     int showings = 0;

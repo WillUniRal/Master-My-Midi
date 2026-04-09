@@ -3,11 +3,14 @@ package uk.ac.bucks.willralph.mmmidi.user;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.Queue;
+
 
 public class Note extends NoteBox {
     private final Piano PIANO;
     private final BorderWidths borderWidth = new BorderWidths(1);
     private static int noteInt = 36;
+    private final NoteQueue QUEUE;
 
     private final Border whiteNoteBorder = new Border(new BorderStroke(
             Color.BLACK,
@@ -29,9 +32,12 @@ public class Note extends NoteBox {
         value = noteInt;
         noteInt++;
     }
-    Note(Type col,Piano piano) {
+    Note(Type col, Piano piano, NoteQueue queue) {
         super(col);
         PIANO = piano;
+
+        QUEUE = queue;
+
 
         callStyle();
         if(COLOUR!=Type.GAP) noteCount();
@@ -43,21 +49,18 @@ public class Note extends NoteBox {
         GridPane.setFillHeight(this,true);
 
         this.setOnMousePressed(e -> on());
-        this.setOnMouseReleased(e -> unpressed());
+        this.setOnMouseReleased(e -> off());
 
         this.setSnapToPixel(false);
     }
     @Override
     protected void whiteStyle() {
-        System.out.println("bazinga");
         this.setHeight(50.0);
         this.setBorder(whiteNoteBorder);
         this.setStyle(WHITE_COLOUR);
-
     }
     @Override
     protected void blackStyle() {
-        this.setMinWidth(PIANO.getBlackWidth());
         this.setMaxHeight(60);
         this.setBorder(blackNoteBorder);
         this.setStyle(BLACK_COLOUR);
@@ -68,7 +71,11 @@ public class Note extends NoteBox {
     public void stretch() {
         if(COLOUR==Type.WHITE) {
             this.setMinWidth(PIANO.getWhiteWidth());
-        } else this.setMinWidth(PIANO.getBlackWidth());
+            QUEUE.setMinWidth(PIANO.getWhiteWidth());
+        } else {
+            this.setMinWidth(PIANO.getBlackWidth());
+            QUEUE.setMinWidth(PIANO.getBlackWidth());
+        }
     }
     @Override
     protected void invis(){
@@ -89,11 +96,14 @@ public class Note extends NoteBox {
             this.setStyle("-fx-background-color: #808080;");
         else
             this.setStyle("-fx-background-color: #2565BA;");
+        QUEUE.startAnim();
+
     }
     public void unpressed() {
         if (COLOUR == Type.WHITE)
             this.setStyle(WHITE_COLOUR);
         else
             this.setStyle(BLACK_COLOUR);
+        QUEUE.stopAnim();
     }
 }

@@ -7,17 +7,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 import uk.ac.bucks.willralph.mmmidi.App;
 
 public class Player extends Page{
 
     private VBox bounds;
+    private final static Piano PIANO = new Piano(5);
 
     @Override
     protected Parent setLayout() {
-        Piano piano = new Piano(5);
-        makeLayout(topBar(),notes(),piano);
+        makeLayout(topBar());
         return bounds;
     }
 
@@ -31,13 +30,12 @@ public class Player extends Page{
         return placeholder;
     }
 
-    private void makeLayout(HBox top, HBox notes, Piano piano) {
-        VBox.setVgrow(notes, Priority.SOMETIMES);
+    private void makeLayout(HBox top) {
 
-        bounds = new VBox(top,notes,piano);
+        bounds = new VBox(top,PIANO.VISUALIZER, PIANO);
         bounds.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         bounds.setSnapToPixel(false);
-        piano.setSnapToPixel(false);
+        PIANO.setSnapToPixel(false);
     }
     private HBox topBar() {
         HBox nav = new HBox();
@@ -62,6 +60,9 @@ public class Player extends Page{
         nav.getChildren().addAll(buttonCurrent, hello, buttonProjected);
 
         return nav;
+    }
+    public static void setListeners() {
+        PIANO.setListeners();
     }
     public Player() {
         super(Type.PLAYER);

@@ -24,7 +24,7 @@
                </items></Menu>
         </menus>
       </MenuBar>
-      <TabPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="376.0" prefWidth="692.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" tabMinWidth="20.0">
+      <TabPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="376.0" prefWidth="692.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" tabMinWidth="20.0" VBox.vgrow="ALWAYS">
         <tabs>
           <Tab text="MIDI">
             <content>
