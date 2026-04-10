@@ -77,8 +77,8 @@ public class Piano extends PianoGrid {
     }
     private NoteQueue makeQueue(int column, Note.Type type) {
         NoteQueue q = new NoteQueue(type);
-        NoteAnim animTest = new NoteAnim(type);
-        VISUALIZER.setCurrentNote(column,animTest);
+
+        VISUALIZER.setCurrentNote(column,q);
         return q;
     }
     @Override

@@ -2,9 +2,8 @@ package uk.ac.bucks.willralph.mmmidi.user;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 // Note Visualizer Box
 public class NoteAnim extends NoteBox {
@@ -12,32 +11,32 @@ public class NoteAnim extends NoteBox {
     NoteAnim(Type col) {
         super(col);
         initScale();
-        setAlignment(Pos.BOTTOM_CENTER);
+        callStyle();
+
         //setPadding(new Insets(6,6,6,6));
-    }
-    protected void initScale() {
-        GridPane.setHgrow(this, Priority.ALWAYS);
-        System.out.println("hi");
-        this.setMinHeight(10);
-        this.setHeight(10);
-        this.setMinWidth(10);
 
     }
-    public void getPos() {
-        System.out.println(getLayoutX());
-        System.out.println(getLayoutY());
+    protected void initScale() {
+        setAlignment(Pos.BOTTOM_CENTER);
+
+        GridPane.setHgrow(this, Priority.ALWAYS);
+        //GridPane.setVgrow(this, Priority.ALWAYS);
+        //this.setMinWidth(10);
+
     }
 
     @Override
     protected void whiteStyle() {
-        String WHITE_COLOUR = "-fx-background-color: #5045ed;";
+        String WHITE_COLOUR = "-fx-background-color: #5045ED;";
         setStyle(WHITE_COLOUR);
+        setBorder(new Border(new BorderStroke(Color.RED,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderWidths.DEFAULT)));
     }
 
     @Override
     protected void blackStyle() {
-        String BLACK_COLOUR = "-fx-background-color: #6720a1;";
-        setStyle(BLACK_COLOUR);
+        // 6720A1
+        setBorder(new Border(new BorderStroke(Color.BLUE,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderWidths.DEFAULT)));
+        setStyle("-fx-background-color: #6720A1;");
     }
 
     @Override

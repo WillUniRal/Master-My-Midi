@@ -35,7 +35,6 @@ public class Note extends NoteBox {
     Note(Type col, Piano piano, NoteQueue queue) {
         super(col);
         PIANO = piano;
-
         QUEUE = queue;
 
 
