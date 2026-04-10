@@ -34,8 +34,10 @@ public class NoteQueue extends NoteAnim {
     }
     private void makeKeyFrames() {
         System.out.println(this.getHeight());
-        height = new KeyValue(currentAnimNote.minHeightProperty(),this.getHeight());
-        yPos = new KeyValue(currentAnimNote.layoutYProperty(),this.getHeight());
+        System.out.print("Booya: ");
+        System.out.println(translateYProperty());
+        height = new KeyValue(currentAnimNote.prefHeightProperty(),this.getHeight()); //this moves everything else up
+        yPos = new KeyValue(currentAnimNote.translateYProperty(),-this.getHeight());
     }
     private Timeline timeline;
     private final Duration ANIM_TIME = Duration.seconds(5);
