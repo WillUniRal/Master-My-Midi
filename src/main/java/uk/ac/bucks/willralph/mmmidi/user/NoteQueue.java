@@ -6,26 +6,29 @@ import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.AbstractQueue;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class NoteQueue extends NoteAnim {
+//make this a stack pane
+public class NoteQueue extends StackPane {
 
-    private NoteAnim currentAnimNote = new NoteAnim(COLOUR);
+    private NoteAnim currentAnimNote;
     private KeyValue height;
     private KeyValue yPos;
 
-
+    public final Note.Type COLOUR;
     // this makes the falling notes
-    NoteQueue(Type col) {
-        super(col);
+    NoteQueue(Note.Type col) {
+        COLOUR = col;
+        currentAnimNote = new NoteAnim(COLOUR);
+        initScale();
     }
-    @Override
-    protected void callStyle(){} // do nothing
-    @Override
+
+
     protected void initScale() {
         GridPane.setVgrow(this, Priority.ALWAYS);
         GridPane.setFillWidth(this,true);
@@ -36,7 +39,7 @@ public class NoteQueue extends NoteAnim {
         System.out.println(this.getHeight());
         System.out.print("Booya: ");
         System.out.println(translateYProperty());
-        height = new KeyValue(currentAnimNote.prefHeightProperty(),this.getHeight()); //this moves everything else up
+        height = new KeyValue(currentAnimNote.maxHeightProperty(),this.getHeight()); //this moves everything else up
         yPos = new KeyValue(currentAnimNote.translateYProperty(),-this.getHeight());
     }
     private Timeline timeline;

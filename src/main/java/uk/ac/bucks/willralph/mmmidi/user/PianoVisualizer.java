@@ -24,8 +24,8 @@ public class PianoVisualizer extends PianoGrid{
         this.setHeight(Double.MAX_VALUE);
     }
 
-    private NoteAnim currentNote;
-    public void setCurrentNote(int column, NoteAnim note) {
+    private NoteQueue currentNote;
+    public void setCurrentNote(int column, NoteQueue note) {
         currentNote = note;
         switch (currentNote.COLOUR) {
             case WHITE ->  makeWhite(column);

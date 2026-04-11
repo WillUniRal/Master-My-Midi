@@ -1,5 +1,7 @@
 package uk.ac.bucks.willralph.mmmidi;
 
+import javafx.application.Platform;
+import uk.ac.bucks.willralph.mmmidi.user.MidiCommandEvent;
 import uk.ac.bucks.willralph.mmmidi.user.Note;
 import uk.ac.bucks.willralph.mmmidi.user.Piano;
 
@@ -24,12 +26,9 @@ public class MidiReceiver implements Receiver {
             int key = shortMessage.getData1();
             int velo = shortMessage.getData2();
             System.out.printf("%1$2s %2$2s %3$2s \n",command,key,velo);
-            Note n =Piano.noteMap.get(key);
+            Note n = Piano.noteMap.get(key);
             if(n==null) return;
-            switch (command) {
-                case 144 -> n.pressed();
-                case 128 -> n.unpressed();
-            }
+            Platform.runLater(new MidiCommandEvent(n,command));
         }
         System.out.println(message.toString());
 

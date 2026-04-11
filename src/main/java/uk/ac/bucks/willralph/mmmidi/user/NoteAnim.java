@@ -13,16 +13,12 @@ public class NoteAnim extends NoteBox {
         initScale();
         callStyle();
 
-        //setPadding(new Insets(6,6,6,6));
-
     }
     protected void initScale() {
         setAlignment(Pos.BOTTOM_CENTER);
-
-        GridPane.setHgrow(this, Priority.ALWAYS);
-        //GridPane.setVgrow(this, Priority.ALWAYS);
-        //this.setMinWidth(10);
-
+        //GridPane.setHgrow(this, Priority.ALWAYS);
+        setMaxHeight(0);
+        this.setHeight(1000);
     }
 
     @Override
