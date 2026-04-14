@@ -30,7 +30,7 @@ public class NoteAnim extends NoteBox {
 
     @Override
     protected void blackStyle() {
-        // 6720A1
+        //this.setTranslateX(this.getWidth()/2d);
         setBorder(new Border(new BorderStroke(Color.BLUE,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderWidths.DEFAULT)));
         setStyle("-fx-background-color: #6720A1;");
     }

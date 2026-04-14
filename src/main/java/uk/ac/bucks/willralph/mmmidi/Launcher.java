@@ -9,6 +9,7 @@ import uk.ac.bucks.willralph.mmmidi.user.Player;
 
 public class Launcher {
     public static void main(String[] args) {
+        System.out.println(Runtime.getRuntime().maxMemory());
         try {
             GlobalScreen.registerNativeHook();
         }

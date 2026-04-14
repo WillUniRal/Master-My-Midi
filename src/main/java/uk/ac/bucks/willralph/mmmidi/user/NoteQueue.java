@@ -36,9 +36,6 @@ public class NoteQueue extends StackPane {
         setAlignment(Pos.BOTTOM_CENTER);
     }
     private void makeKeyFrames() {
-        System.out.println(this.getHeight());
-        System.out.print("Booya: ");
-        System.out.println(translateYProperty());
         height = new KeyValue(currentAnimNote.maxHeightProperty(),this.getHeight()); //this moves everything else up
         yPos = new KeyValue(currentAnimNote.translateYProperty(),-this.getHeight());
     }
@@ -50,7 +47,6 @@ public class NoteQueue extends StackPane {
 
         anims.add(currentAnimNote);
 
-        System.out.println("starting");
         this.getChildren().add(currentAnimNote);
         KeyFrame frame = new KeyFrame(ANIM_TIME, height);
 
@@ -58,11 +54,10 @@ public class NoteQueue extends StackPane {
         timeline.play();
     }
     public void stopAnim() {
-        System.out.println("stoping");
         newAnimNote();
 
-        Duration currentRunTime = timeline.getCurrentTime();
-        System.out.println(currentRunTime);
+        //Duration currentRunTime = timeline.getCurrentTime();
+        //System.out.println(currentRunTime);
         timeline.stop();
         //.subtract(currentRunTime)
         KeyFrame frame = new KeyFrame(ANIM_TIME, yPos);

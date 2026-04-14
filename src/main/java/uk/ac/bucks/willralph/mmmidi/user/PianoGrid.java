@@ -24,7 +24,7 @@ public abstract class PianoGrid extends StackPane {
     protected static int octaves =5; //m
     public final static int OCTAVE=7; // repeats at 8
 
-    private void scale() {
+    protected void scale() {
         scaleChildNote(BLACK_NOTES.getChildren());
         scaleChildNote(WHITE_NOTES.getChildren());
     }
@@ -34,27 +34,14 @@ public abstract class PianoGrid extends StackPane {
             currentNote.stretch();
         }
     }
-    private static boolean appWidthChanged = false;
+
 
     public void addStackedGrids() {
         this.getChildren().add(WHITE_NOTES);
         this.getChildren().add(BLACK_NOTES);
     }
 
-    public void setListeners() {
-        App.mainStage.getScene().widthProperty().addListener(e -> {
-            appWidthChanged = true;
-        });
-        NativeMouseInputListener mouseInputListener = new NativeMouseInputListener() {
-            @Override
-            public void nativeMouseReleased(NativeMouseEvent nativeEvent) {
-                NativeMouseInputListener.super.nativeMouseReleased(nativeEvent);
-                if(appWidthChanged) scale();
-                appWidthChanged = false;
-            }
-        };
-        GlobalScreen.addNativeMouseListener(mouseInputListener);
-    }
+
     // this is needed for scaling in the Notes
     private static final int END_NOTES_OFFSET = 1;
     public double getWhiteWidth() {

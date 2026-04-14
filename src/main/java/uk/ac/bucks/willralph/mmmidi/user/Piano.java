@@ -1,9 +1,13 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
+import com.github.kwhat.jnativehook.GlobalScreen;
+import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
+import com.github.kwhat.jnativehook.mouse.NativeMouseInputListener;
 import javafx.scene.layout.*;
 
 import java.util.*;
 
+import uk.ac.bucks.willralph.mmmidi.App;
 import uk.ac.bucks.willralph.mmmidi.SoundFont;
 import uk.ac.bucks.willralph.mmmidi.MidiConnection;
 
@@ -48,6 +52,7 @@ public class Piano extends PianoGrid {
     protected void initScale() {
         super.initScale();
         VISUALIZER.initScale();
+        offsetBlack();
         //enabling HGrow will cause pixel snapping
         //BLACK_NOTES.setGridLinesVisible(true); //debug to see where the gaps are
         this.setWidth(Double.MAX_VALUE);
@@ -106,8 +111,26 @@ public class Piano extends PianoGrid {
             addNote(newNote);
         } else makeBlackGap();
     }
-
-
+    private static boolean appWidthChanged = false;
+    public void setListeners() {
+        App.mainStage.getScene().widthProperty().addListener(e -> {
+            appWidthChanged = true;
+        });
+        NativeMouseInputListener mouseInputListener = new NativeMouseInputListener() {
+            @Override
+            public void nativeMouseReleased(NativeMouseEvent nativeEvent) {
+                NativeMouseInputListener.super.nativeMouseReleased(nativeEvent);
+                offsetBlack();
+                if(appWidthChanged) scale();
+                appWidthChanged = false;
+            }
+        };
+        GlobalScreen.addNativeMouseListener(mouseInputListener);
+    }
+    private void offsetBlack() {
+        VISUALIZER.BLACK_NOTES.setTranslateX(getBlackWidth()/2);
+        BLACK_NOTES.setTranslateX(getBlackWidth()/2);
+    }
     public void setOctaves(int octaves) {
         Piano.octaves = octaves;
     }
