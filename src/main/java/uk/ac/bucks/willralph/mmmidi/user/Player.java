@@ -2,6 +2,8 @@ package uk.ac.bucks.willralph.mmmidi.user;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Camera;
+import javafx.scene.ParallelCamera;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,8 +33,10 @@ public class Player extends Page{
     }
 
     private void makeLayout(HBox top) {
-
-        bounds = new VBox(top,PIANO.VISUALIZER, PIANO);
+        //System.out.println(PIANO.VISUALIZER.getTranslateZ());
+        Camera cam = new ParallelCamera();
+        PIANO.setTranslateZ(-1);
+        bounds = new VBox(cam,top,PIANO.VISUALIZER, PIANO);
         bounds.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         bounds.setSnapToPixel(false);
         PIANO.setSnapToPixel(false);
@@ -59,6 +63,7 @@ public class Player extends Page{
 
         nav.getChildren().addAll(buttonCurrent, hello, buttonProjected);
 
+        nav.setTranslateZ(-1);
         return nav;
     }
     public static void setListeners() {
