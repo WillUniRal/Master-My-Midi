@@ -5,6 +5,7 @@ module uk.ac.bucks.willralph.mmmidi {
     requires java.desktop;
     requires javafx.graphics;
     requires com.github.kwhat.jnativehook;
+    requires com.fazecast.jSerialComm;
 
     //requires org.controlsfx.controls;
     //requires org.kordamp.ikonli.javafx;

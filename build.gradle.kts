@@ -44,7 +44,12 @@ dependencies {
     implementation("eu.hansolo:tilesfx:21.0.9") {
         exclude(group = "org.openjfx")
     }
+    // only needed for scaling, proper implementation should use a thread sleeping until a delay
     implementation("com.github.kwhat:jnativehook:2.2.2")
+
+    // Source: https://mvnrepository.com/artifact/com.fazecast/jSerialComm
+    implementation("com.fazecast:jSerialComm:2.11.4")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
