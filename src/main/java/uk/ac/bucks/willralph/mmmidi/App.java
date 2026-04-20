@@ -59,7 +59,7 @@ public class App extends Application {
     }
     public static void setCurrentScene() {
         mainStage.hide();
-        Scene scene = new Scene(layout, size.getWidth(), size.getHeight(),false, SceneAntialiasing.BALANCED);
+        Scene scene = new Scene(layout, size.getWidth(), size.getHeight(),true, SceneAntialiasing.BALANCED);
         mainStage.setForceIntegerRenderScale(false);
         mainStage.setScene(scene);
         mainStage.show();
@@ -81,7 +81,7 @@ public class App extends Application {
     }
     int showings = 0;
     public void render() {
-        // re render
+        // re-render
         System.out.println("show:"+showings);
     }
     public static Dimension2D setDimension(int width,int height) {

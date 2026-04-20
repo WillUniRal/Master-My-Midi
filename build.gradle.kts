@@ -1,3 +1,4 @@
+
 plugins {
     java
     application
@@ -7,7 +8,7 @@ plugins {
 }
 
 group = "uk.ac.bucks.willralph"
-version = "1.0-SNAPSHOT"
+version = "0.1"
 
 repositories {
     mavenCentral()
@@ -59,4 +60,16 @@ jlink {
     launcher {
         name = "app"
     }
+}
+//
+// jar --create --file app.jar --manifest MANIFEST.MF -C classes . -C src/main/resources .
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "uk/ac/bucks/willralph/mmmidi/Launcher.class"
+
+    }
+}
+tasks.register<Copy>( "copyDependencies") {
+    from(configurations.runtimeClasspath)
+    into("lib")
 }
