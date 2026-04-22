@@ -6,7 +6,7 @@ public class SerialCom {
         private final SerialPort comPort;
         private boolean connection;
 
-        SerialCom() {
+        public SerialCom() {
             comPort = getComPort();
             confComPort();
             connection = openComPort();
@@ -35,15 +35,13 @@ public class SerialCom {
             // 16 - Busy (Solution: kill any processes e.g. screen)
         }
 
-        public void sendData() {
+        public void sendData(int value) {
             if(!connection) {
                 //reattempt
                 if(!openComPort()) return;
                 connection = true;
             }
-
-            System.out.println("Port is open!");
-            String data = "This data was a string!";
+            String data = "Value " + value;
             byte[] buffer = data.getBytes();
             comPort.writeBytes(buffer, buffer.length);
 

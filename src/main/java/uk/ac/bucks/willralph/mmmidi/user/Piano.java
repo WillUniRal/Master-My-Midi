@@ -1,5 +1,6 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
+import com.fazecast.jSerialComm.SerialPort;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
 import com.github.kwhat.jnativehook.mouse.NativeMouseInputListener;
@@ -10,8 +11,10 @@ import java.util.*;
 import uk.ac.bucks.willralph.mmmidi.App;
 import uk.ac.bucks.willralph.mmmidi.SoundFont;
 import uk.ac.bucks.willralph.mmmidi.MidiConnection;
+import uk.ac.bucks.willralph.picom.SerialCom;
 
 public class Piano extends PianoGrid {
+    public final SerialCom SERIAL = new SerialCom();
     public static final SoundFont sounds = new SoundFont(); //k
     private static final MidiConnection midiDevice = new MidiConnection(); //k
     public final PianoVisualizer VISUALIZER = new PianoVisualizer();
