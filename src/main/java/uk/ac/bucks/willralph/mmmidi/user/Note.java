@@ -7,6 +7,8 @@ import java.util.Queue;
 
 
 public class Note extends NoteBox {
+
+
     private final Piano PIANO;
     private final BorderWidths borderWidth = new BorderWidths(1);
     private static int noteInt = 36;
@@ -83,10 +85,12 @@ public class Note extends NoteBox {
     }
     private void on() {
         Piano.sounds.playNote(value,120,0);
+        PIANO.SERIAL.sendData(value);
         pressed();
     }
     private void off() {
         //Piano.sounds.stopNote(value,120,0);
+
         unpressed();
     }
 
