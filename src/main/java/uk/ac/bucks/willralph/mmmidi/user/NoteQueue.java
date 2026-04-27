@@ -72,7 +72,6 @@ public class NoteQueue extends StackPane {
     private void cleanUp() {
         // Stuck at O(n) because javafx is -
         // O(1) with queue imp
-        System.out.println("clean");
         this.getChildren().remove(anims.poll());
     }
 

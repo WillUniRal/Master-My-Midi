@@ -1,10 +1,10 @@
 package uk.ac.bucks.willralph.mmmidi.user;
 
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import uk.ac.bucks.willralph.picom.SerialCom.Method;
 
+import java.awt.Color;
 import java.util.Queue;
-
 
 public class Note extends NoteBox {
 
@@ -15,13 +15,13 @@ public class Note extends NoteBox {
     private final NoteQueue QUEUE;
 
     private final Border whiteNoteBorder = new Border(new BorderStroke(
-            Color.BLACK,
+            javafx.scene.paint.Color.BLACK,
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
             BorderStroke.THIN
     ));
     private final Border blackNoteBorder = new Border(new BorderStroke(
-            Color.gray(0.5),
+            javafx.scene.paint.Color.gray(0.5),
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
             borderWidth
@@ -85,7 +85,7 @@ public class Note extends NoteBox {
     }
     private void on() {
         Piano.sounds.playNote(value,120,0);
-        PIANO.SERIAL.sendData(value);
+
         pressed();
     }
     private void off() {
@@ -95,10 +95,14 @@ public class Note extends NoteBox {
     }
 
     public void pressed() {
-        if(COLOUR == Type.WHITE)
+        if(COLOUR == Type.WHITE) {
             this.setStyle("-fx-background-color: #808080;");
-        else
+            PIANO.SERIAL.sendData(Method.ON, value, Color.RED);
+        } else {
             this.setStyle("-fx-background-color: #2565BA;");
+            PIANO.SERIAL.sendData(Method.ON, value, Color.BLUE);
+        }
+
         QUEUE.startAnim();
 
     }
@@ -107,6 +111,7 @@ public class Note extends NoteBox {
             this.setStyle(WHITE_COLOUR);
         else
             this.setStyle(BLACK_COLOUR);
+        PIANO.SERIAL.sendData(Method.OFF,value);
         QUEUE.stopAnim();
     }
 }

@@ -1,6 +1,10 @@
 package uk.ac.bucks.willralph.picom;
 import com.fazecast.jSerialComm.SerialPort;
 
+import java.awt.Color;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+
 public class SerialCom {
 
         private final SerialPort comPort;
@@ -34,16 +38,33 @@ public class SerialCom {
             System.err.println("Err Code: "+comPort.getLastErrorCode());
             // 16 - Busy (Solution: kill any processes e.g. screen)
         }
-
-        public void sendData(int value) {
+        public enum Method {
+            ON,
+            OFF
+        }
+        public void sendData(Method method, int value, Color ...color) {
             if(!connection) {
                 //reattempt
                 if(!openComPort()) return;
                 connection = true;
             }
-            String data = "Value " + value;
-            byte[] buffer = data.getBytes();
-            comPort.writeBytes(buffer, buffer.length);
+            int length;
+            length = (method == Method.ON) ? 4 : 1;
+
+            ByteBuffer byteBuffer = ByteBuffer.allocate(2+length);
+
+            byteBuffer.put((byte) method.ordinal());
+            byteBuffer.put((byte) length);
+            byteBuffer.put((byte) value);
+
+            if(method == Method.ON) {
+                byteBuffer.put((byte) color[0].getRed());
+                byteBuffer.put((byte) color[0].getGreen());
+                byteBuffer.put((byte) color[0].getBlue());
+            }
+            
+            //System.out.println(Arrays.toString(byteBuffer) +"bval ");
+            comPort.writeBytes(byteBuffer.array(), byteBuffer.capacity());
 
         }
 

@@ -25,12 +25,14 @@ public class MidiReceiver implements Receiver {
             int command = shortMessage.getCommand(); //144 on 128 off
             int key = shortMessage.getData1();
             int velo = shortMessage.getData2();
-            System.out.printf("%1$2s %2$2s %3$2s \n",command,key,velo);
+            //System.out.printf("%1$2s %2$2s %3$2s \n",command,key,velo);
             Note n = Piano.noteMap.get(key);
             if(n==null) return;
             Platform.runLater(new MidiCommandEvent(n,command));
         }
-        System.out.println(message.toString());
+        //System.out.println(message.toString());
+        //128 47  0
+        //com.sun.media.sound.FastShortMessage@4db7f8a3
 
 
     }
