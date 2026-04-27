@@ -56,10 +56,15 @@ class Piano :
         on_note.setColor(Color(*args))
         
         on_note.buffer[value] = on_note
+
+    def turnOnBuffers(self) :
+        for notes in White.buffer.values(): notes.turnOn(self.strip)
+        for notes in Black.buffer.values(): notes.turnOn(self.strip)
         
 
     def turnNoteOff(self,value) :
-        self.notes[value].turnOff(self.strip)
+        if value in White.buffer : White.buffer.pop(value).turnOff(self.strip)
+        if value in Black.buffer : Black.buffer.pop(value).turnOff(self.strip)
 
     def make(self) :
         self.notes : dict[int,Note] = {}

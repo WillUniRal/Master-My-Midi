@@ -40,6 +40,8 @@ while True:
             value = data[0]
             piano.turnNoteOff(value)
             print(value)
+
+        piano.turnOnBuffers()
         
         piano.strip.show()
 

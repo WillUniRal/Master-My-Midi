@@ -20,11 +20,11 @@ public class SerialCom {
         }
 
         private SerialPort getComPort() {
-            try {
-                return SerialPort.getCommPort("ttyUSB0");
-            } catch (SerialPortInvalidPortException e) {
-                return null;
+            for(SerialPort port : SerialPort.getCommPorts()) {
+                if (port.getSystemPortName().contains("USB")) return port;
             }
+            // SerialPortInvalidPortException
+            return null;
         }
 
         private void confComPort() {
@@ -51,14 +51,15 @@ public class SerialCom {
             ON,
             OFF
         }
-        public void sendData(Method method, int value, Color ...color) {
+        public void sendData(Method method, int value, Color ...colors) {
             if(!connection) {
                 //reattempt
                 if(!openComPort()) return;
                 connection = true;
             }
             int length;
-            length = (method == Method.ON) ? 4 : 1;
+            System.out.println(colors.length*3);
+            length = 1+(colors.length*3);
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(2+length);
 
@@ -66,10 +67,10 @@ public class SerialCom {
             byteBuffer.put((byte) length);
             byteBuffer.put((byte) value);
 
-            if(method == Method.ON) {
-                byteBuffer.put((byte) color[0].getRed());
-                byteBuffer.put((byte) color[0].getGreen());
-                byteBuffer.put((byte) color[0].getBlue());
+            for (Color color : colors) {
+                byteBuffer.put((byte) color.getRed());
+                byteBuffer.put((byte) color.getGreen());
+                byteBuffer.put((byte) color.getBlue());
             }
             
             //System.out.println(Arrays.toString(byteBuffer) +"bval ");
