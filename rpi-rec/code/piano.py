@@ -1,5 +1,5 @@
 from note import *
-import heapq
+
 # LED strip configuration:
 LED_COUNT      = 332     # Number of LED pixels.
 LED_PIN        = 12      # GPIO pin connected to the pixels (18 uses PWM!).
@@ -44,20 +44,19 @@ class Piano :
     
     @property
     def is_white(self) -> bool : 
-        E : bool = 0 == (self.current_note - 5) % 12
-        B : bool = 0 == self.current_note % 12
+        E : bool = (0 == (self.current_note - 5) % self.OCTAVE_SIZE)
+        B : bool = (0 == self.current_note % self.OCTAVE_SIZE)
+        # if the previous note was black make it white
+        # if is e or b make it white next
         self.__white = self.__white == (E or B)
-
         return self.__white
     
     def turnNoteOn(self,value, *args) :
         on_note : Note = self.notes[value]
         on_note.setColor(Color(*args))
-
-        if isinstance(on_note,White) :
-            self.white_note_buffer[value] = on_note
-        elif isinstance(on_note,Black) :
-            self.black_note_buffer[value] = on_note
+        
+        on_note.buffer[value] = on_note
+        
 
     def turnNoteOff(self,value) :
         self.notes[value].turnOff(self.strip)

@@ -1,5 +1,8 @@
 package uk.ac.bucks.willralph.picom;
 import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPortInvalidPortException;
+
+import java.io.IOException;
 
 public class SerialCom {
 
@@ -13,10 +16,15 @@ public class SerialCom {
         }
 
         private SerialPort getComPort() {
-            return SerialPort.getCommPort("ttyUSB0");
+            try {
+                return SerialPort.getCommPort("ttyUSB0");
+            } catch (SerialPortInvalidPortException e) {
+                return null;
+            }
         }
 
         private void confComPort() {
+            if(comPort == null) return;
             comPort.setBaudRate(115200);
             comPort.setNumDataBits(8);
             comPort.setNumStopBits(1);
@@ -24,6 +32,7 @@ public class SerialCom {
         }
 
         private boolean openComPort() {
+            if (comPort == null) return false;
             boolean result = comPort.openPort();
             if (result)  System.out.println("Port open successfully.");
             else comPortFail();

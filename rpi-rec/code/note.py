@@ -7,6 +7,10 @@ class Note(ABC) :
     @property 
     @abstractmethod
     def size() : pass
+
+    @property
+    @abstractmethod
+    def buffer() : pass
     
     START_VALUE = 36
     cur_val = 0
@@ -41,12 +45,16 @@ class Note(ABC) :
 class White(Note) :
 
     size : int = 7
+    buffer : dict[int,Note] = {}
+    
     def __init__(self,value):
         super().__init__(value,White)
 
 class Black(Note) :
 
     size : int = 3
+    buffer : dict[int,Note]= {}
+
     def __init__(self,value):
         super().__init__(value,Black)
 
