@@ -67,37 +67,24 @@ class Black(Note) :
         self.tail_size = Black.total_size
 
         super().__init__(value, Black)
-        self.set_relative_pos()
-        
-        
+        self.set_tail()  
         
     @property
     def relative_pos(self) :
         return self.tail_size
 
-    def set_relative_pos(self) :
-         
-        if self.SHARP_NOTES[self.color_count % 5]() and self.color_count!=0 : 
-            Black.total_size += 5
-        
-        Black.total_size += self.size
-    
-    @property
-    def SHARP_NOTES(self) -> dict[int,callable]:
-        return {
-            0 : self.B,
-            1 : self.C,
-            2 : self.E,
-            3 : self.F,
-            4 : self.G
-        }
-    
+    def set_tail(self) :
 
-    def B(_) : return False
-    def C(_) : return True
-    def E(_) : return False
-    def F(_) : return False
-    def G(_) : return True
+        C_SHARP : bool = 1 == self.color_count % 5
+        G_SHARP : bool = 4 == self.color_count % 5
+
+        Black.total_size += self.size
+
+        if self.color_count==0 : return
+
+        elif C_SHARP : Black.total_size += 4
+        elif G_SHARP : Black.total_size += 5
+    
       
 if __name__ == "__main__" :
     note = White(1)
