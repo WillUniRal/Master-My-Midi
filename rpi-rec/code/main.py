@@ -33,13 +33,13 @@ while True:
 
         if method == Method.ON :
             value, r, g, b = struct.unpack('B'*msg_len, data)
-            print(f"v{value} rgb:{r} {g} {b}")
+            #print(f"value :{value} rgb:{r} {g} {b}")
 
             piano.turnNoteOn(value, r,g,b)
         else :
             value = data[0]
             piano.turnNoteOff(value)
-            print(value)
+            #print(f"value :{value} (off)")
 
         piano.turnOnBuffers()
         
