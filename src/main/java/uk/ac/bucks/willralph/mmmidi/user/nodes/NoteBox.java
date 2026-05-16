@@ -1,4 +1,4 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.nodes;
 
 import javafx.scene.layout.VBox;
 

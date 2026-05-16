@@ -12,8 +12,8 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 class Piano :
 
-    OCTAVE_SIZE = 12
-    END_NOTES_OFFSET = 1
+    __OCTAVE_SIZE = 12
+    __END_NOTES_OFFSET = 1
 
     white_note_buffer : dict[int,White]= {}
     black_note_buffer : dict[int,Black]= {}
@@ -35,7 +35,7 @@ class Piano :
     @property
     def __piano_len(self) :
         #returns how many white keys
-        return self.OCTAVE_SIZE*self.octaves+self.END_NOTES_OFFSET
+        return self.__OCTAVE_SIZE*self.octaves+self.__END_NOTES_OFFSET
     
     @property
     def __piano_range(self) :
@@ -44,10 +44,9 @@ class Piano :
     
     @property
     def is_white(self) -> bool : 
-        E : bool = (0 == (self.current_note - 5) % self.OCTAVE_SIZE)
-        B : bool = (0 == self.current_note % self.OCTAVE_SIZE)
-        # if the previous note was black make it white
-        # if is e or b make it white next
+        E : bool = (0 == (self.current_note - 5) % self.__OCTAVE_SIZE)
+        B : bool = (0 == self.current_note % self.__OCTAVE_SIZE)
+        # make the next note the opposite of the previous, if e or b make it white next
         self.__white = self.__white == (E or B)
         return self.__white
     

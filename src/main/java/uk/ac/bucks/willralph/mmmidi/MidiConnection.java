@@ -51,7 +51,7 @@ public class MidiConnection {
         MidiDevice result;
         try {
             result = MidiSystem.getMidiDevice(info);
-            result.open();
+            result.open(); // probably shouldn't open it here
             result.getTransmitter().setReceiver(output);
         }
         catch (MidiUnavailableException e)

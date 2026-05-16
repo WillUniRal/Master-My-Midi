@@ -3,22 +3,16 @@ package uk.ac.bucks.willralph.mmmidi;
 //import java.awt.*;
 //import javax.swing.*;
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Dimension2D;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import uk.ac.bucks.willralph.mmmidi.user.Page;
-import uk.ac.bucks.willralph.mmmidi.user.Piano;
-import uk.ac.bucks.willralph.mmmidi.user.Player;
-import uk.ac.bucks.willralph.mmmidi.user.Settings;
+import uk.ac.bucks.willralph.mmmidi.user.pages.Page;
+import uk.ac.bucks.willralph.mmmidi.user.pages.Player;
+import uk.ac.bucks.willralph.mmmidi.user.pages.Settings;
 
 
 public class App extends Application {

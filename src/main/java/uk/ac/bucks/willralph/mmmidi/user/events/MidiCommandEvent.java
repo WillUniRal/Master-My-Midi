@@ -1,4 +1,6 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.events;
+
+import uk.ac.bucks.willralph.mmmidi.user.nodes.Note;
 
 public class MidiCommandEvent implements Runnable {
     private final Note note;

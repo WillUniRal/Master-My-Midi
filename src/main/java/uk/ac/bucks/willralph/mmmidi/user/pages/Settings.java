@@ -1,15 +1,15 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.pages;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import uk.ac.bucks.willralph.mmmidi.App;
 import uk.ac.bucks.willralph.mmmidi.MidiConnection;
+import uk.ac.bucks.willralph.mmmidi.user.events.DeviceSelectEvent;
 
 import javax.sound.midi.MidiDevice;
 import java.io.IOException;

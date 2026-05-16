@@ -3,9 +3,6 @@ package uk.ac.bucks.willralph.mmmidi;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 import javafx.application.Application;
-import javafx.scene.Parent;
-import uk.ac.bucks.willralph.mmmidi.user.Page;
-import uk.ac.bucks.willralph.mmmidi.user.Player;
 
 public class Launcher {
     public static void main(String[] args) {

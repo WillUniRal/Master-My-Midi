@@ -1,8 +1,5 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.nodes;
 
-import com.github.kwhat.jnativehook.GlobalScreen;
-import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
-import com.github.kwhat.jnativehook.mouse.NativeMouseInputListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

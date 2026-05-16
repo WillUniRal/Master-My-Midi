@@ -1,6 +1,5 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.nodes;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -12,7 +11,6 @@ public class NoteAnim extends NoteBox {
         super(col);
         initScale();
         callStyle();
-
     }
     protected void initScale() {
         setAlignment(Pos.BOTTOM_CENTER);

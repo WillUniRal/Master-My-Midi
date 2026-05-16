@@ -1,4 +1,4 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.nodes;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -9,7 +9,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-import java.util.AbstractQueue;
 import java.util.ArrayDeque;
 import java.util.Queue;
 

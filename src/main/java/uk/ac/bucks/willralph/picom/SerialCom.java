@@ -53,8 +53,7 @@ public class SerialCom {
         }
         public void sendData(Method method, int value, Color ...colors) {
             if(!connection) {
-                //reattempt
-                if(!openComPort()) return;
+                if(!openComPort()) return; //reattempt
                 connection = true;
             }
             int length;

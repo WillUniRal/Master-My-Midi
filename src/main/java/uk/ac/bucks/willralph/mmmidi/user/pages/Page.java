@@ -1,4 +1,4 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.pages;
 
 import javafx.scene.Parent;
 

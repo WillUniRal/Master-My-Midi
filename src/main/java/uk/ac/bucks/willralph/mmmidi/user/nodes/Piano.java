@@ -1,6 +1,5 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.nodes;
 
-import com.fazecast.jSerialComm.SerialPort;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
 import com.github.kwhat.jnativehook.mouse.NativeMouseInputListener;
@@ -29,7 +28,7 @@ public class Piano extends PianoGrid {
         endGap = false;
         return result;
     }
-    Piano(int oct) {
+    public Piano(int oct) {
         octaves = oct;
 
         if(!initialized) generateOctaves();
@@ -85,7 +84,6 @@ public class Piano extends PianoGrid {
     }
     private NoteQueue makeQueue(int column, Note.Type type) {
         NoteQueue q = new NoteQueue(type);
-
         VISUALIZER.setCurrentNote(column,q);
         return q;
     }
@@ -110,7 +108,6 @@ public class Piano extends PianoGrid {
         if(make) {
             Note newNote = new Note(type,this, makeQueue(noteCount,type));
             BLACK_NOTES.addColumn(noteCount,newNote);
-
             addNote(newNote);
         } else makeBlackGap();
     }

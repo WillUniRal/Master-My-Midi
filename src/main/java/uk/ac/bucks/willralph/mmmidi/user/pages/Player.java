@@ -1,4 +1,4 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.pages;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import uk.ac.bucks.willralph.mmmidi.App;
+import uk.ac.bucks.willralph.mmmidi.user.nodes.Piano;
 
 public class Player extends Page{
 

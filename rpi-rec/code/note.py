@@ -9,7 +9,7 @@ class Note(ABC) :
 
     @property 
     @abstractmethod
-    def size() : pass
+    def _size() : pass
 
     @property
     @abstractmethod
@@ -17,7 +17,7 @@ class Note(ABC) :
 
     @property
     @abstractmethod
-    def relative_pos() : pass
+    def _relative_pos() : pass
 
     def __init__(self, value, cls) :
         # col value is how many 
@@ -28,37 +28,37 @@ class Note(ABC) :
         self.setLEDs(10)
         
     def setLEDs(self, start_led) :
-        self.position = start_led + self.relative_pos
-        self.end = self.position + self.size
+        self.position = start_led + self._relative_pos
+        self.end = self.position + self._size
     
     def setColor(self, color : Color) :
         self.color = color
 
     def turnOn(self, strip : Adafruit_NeoPixel) :
-        strip[self.position:self.end] = self.color * self.size
+        strip[self.position:self.end] = self.color * self._size
 
     def turnOff(self, strip : Adafruit_NeoPixel) :
-        strip[self.position:self.end] = Color(0,0,0) * self.size
+        strip[self.position:self.end] = Color(0,0,0) * self._size
 
 
 
 class White(Note) :
 
-    size : int = 7
+    _size : int = 7
     buffer : dict[int, Note] = {}
     
     def __init__(self, value) :
         super().__init__(value, White)
 
     @property
-    def relative_pos(self) :
-        return self.color_count*self.size
+    def _relative_pos(self) :
+        return self.color_count*self._size
 
     
 
 class Black(Note) :
 
-    size : int = 3
+    _size : int = 3
     buffer : dict[int, Note]= {}
     total_size : int = 0
 
@@ -70,20 +70,20 @@ class Black(Note) :
         self.set_tail()  
         
     @property
-    def relative_pos(self) :
+    def _relative_pos(self) :
         return self.tail_size
 
     def set_tail(self) :
 
         C_SHARP : bool = 1 == self.color_count % 5
-        G_SHARP : bool = 4 == self.color_count % 5
+        F_SHARP : bool = 4 == self.color_count % 5
 
-        Black.total_size += self.size
+        Black.total_size += self._size
 
         if self.color_count==0 : return
 
         elif C_SHARP : Black.total_size += 4
-        elif G_SHARP : Black.total_size += 5
+        elif F_SHARP : Black.total_size += 5
     
       
 if __name__ == "__main__" :

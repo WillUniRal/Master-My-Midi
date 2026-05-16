@@ -1,9 +1,9 @@
 package uk.ac.bucks.willralph.mmmidi;
 
 import javafx.application.Platform;
-import uk.ac.bucks.willralph.mmmidi.user.MidiCommandEvent;
-import uk.ac.bucks.willralph.mmmidi.user.Note;
-import uk.ac.bucks.willralph.mmmidi.user.Piano;
+import uk.ac.bucks.willralph.mmmidi.user.events.MidiCommandEvent;
+import uk.ac.bucks.willralph.mmmidi.user.nodes.Note;
+import uk.ac.bucks.willralph.mmmidi.user.nodes.Piano;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
@@ -33,8 +33,6 @@ public class MidiReceiver implements Receiver {
         //System.out.println(message.toString());
         //128 47  0
         //com.sun.media.sound.FastShortMessage@4db7f8a3
-
-
     }
 
     @Override

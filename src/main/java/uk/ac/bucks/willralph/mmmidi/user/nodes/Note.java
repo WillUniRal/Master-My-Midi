@@ -1,10 +1,9 @@
-package uk.ac.bucks.willralph.mmmidi.user;
+package uk.ac.bucks.willralph.mmmidi.user.nodes;
 
 import javafx.scene.layout.*;
 import uk.ac.bucks.willralph.picom.SerialCom.Method;
 
 import java.awt.Color;
-import java.util.Queue;
 
 public class Note extends NoteBox {
 
@@ -102,9 +101,7 @@ public class Note extends NoteBox {
             this.setStyle("-fx-background-color: #2565BA;");
             PIANO.SERIAL.sendData(Method.ON, value, Color.BLUE);
         }
-
         QUEUE.startAnim();
-
     }
     public void unpressed() {
         if (COLOUR == Type.WHITE)
