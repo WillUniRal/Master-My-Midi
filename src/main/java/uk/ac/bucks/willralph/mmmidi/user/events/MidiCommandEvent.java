@@ -2,6 +2,8 @@ package uk.ac.bucks.willralph.mmmidi.user.events;
 
 import uk.ac.bucks.willralph.mmmidi.user.nodes.Note;
 
+import javax.sound.midi.ShortMessage;
+
 public class MidiCommandEvent implements Runnable {
     private final Note note;
     private final int command;
@@ -13,8 +15,8 @@ public class MidiCommandEvent implements Runnable {
     @Override
     public void run() {
         switch (command) {
-            case 144 -> note.pressed();
-            case 128 -> note.unpressed();
+            case ShortMessage.NOTE_ON -> note.pressed();
+            case ShortMessage.NOTE_OFF -> note.unpressed();
         }
     }
 }
