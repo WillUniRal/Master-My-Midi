@@ -1,0 +1,15 @@
+[Unit]
+Description=A Serial to LED Visualizer
+BindsTo=dev-serial0.device
+After=dev-serial0.device
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=sudo python home/dev/MMMIDI-python/main.py
+Restart=always
+RestartSec=2
+Type=simple
+User=dev
+Group=dialout
