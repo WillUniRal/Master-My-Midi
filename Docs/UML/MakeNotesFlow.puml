@@ -1,0 +1,43 @@
+@startuml
+skinparam backgroundColor #FEFEFE
+skinparam activityFontStyle bold
+skinparam activityFontSize 12
+skinparam activityFontColor #1a1a2e
+skinparam arrowFontSize 10
+skinparam arrowFontColor #555555
+skinparam titleFontSize 14
+skinparam titleFontColor #1a1a2e
+skinparam titleFontStyle bold
+skinparam conditionFontStyle bold
+skinparam conditionFontColor #2c3e50
+skinparam conditionBackgroundColor #FFF3CD
+skinparam activityBackgroundColor #E8F4FD
+skinparam activityBorderColor #2980b9
+skinparam partitionBorderColor #4A8
+skinparam partitionBorderThickness 4
+skinparam activityBorderThickness 2
+skinparam activityDiamondBackgroundColor #FFF3CD
+skinparam activityDiamondBorderColor #f39c12
+skinparam defaultTextAlignment center
+title Make Notes
+
+start
+:Create note dictionary;
+:Make current note the start value (36);
+while (Loop for the duration of the pianos range)
+:Make the current note the value of index;
+partition is_white() #AFA {
+    if (was previously white) then (yes)
+    ':do something;
+    if (E or B) then (yes)
+    else (no)
+    :change to black;
+    endif
+    else (no)
+    :change to white;
+    endif
+}
+:construct from the result of is_white;
+endwhile
+stop
+@enduml

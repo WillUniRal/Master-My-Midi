@@ -57,7 +57,6 @@ public class SerialCom {
                 connection = true;
             }
             int length;
-            System.out.println(colors.length*3);
             length = 1+(colors.length*3);
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(2+length);

@@ -1,0 +1,78 @@
+@startuml
+hide circle
+
+skinparam roundcorner           15
+skinparam ParticipantPadding    20
+skinparam BoxPadding            8
+skinparam Padding               0
+
+skinparam class {
+    BackgroundColor #FF8/#FA5
+    BorderColor Black
+    BorderThickness 2
+    ArrowColor Black
+    HeaderBackgroundColor #8FF/#44F
+    HeaderBorderColor Black
+    ParticipantBackgroundColor #FFFFF0
+}
+
+class Piano {
+    -OCTAVE_SIZE
+    -END_NOTES_OFFSET
+    +white_note_buffer
+    +black_note_buffer
+    +octaves
+    +offset : int
+    +strip : LED strip
+
+    +__init__()
+    -piano_len()
+    -piano_range()
+    +is_white() : bool
+    +turnNoteOn(value)
+    +turnOnBuffers()
+    +turnNoteOff(value)
+    +make()
+}
+
+class Note {
+    +START_VALUE
+    +cur_count
+    +color_count
+    +value : value
+
+    #size()
+    +buffer()
+    #relative_pos()
+    +__init__(value, cls)
+    +setLEDs(start_led)
+    +setColor(color : Color)
+    +turnOn(strip : LED strip)
+    +turnOff(strip : LED strip)
+}
+
+class White {
+    #size
+    +buffer
+
+    +__init__(value)
+    #relative_pos()
+}
+
+class Black {
+    #size
+    +buffer
+    +total_size
+    +tail_size
+
+    +__init__(value)
+    #relative_pos()
+    +set_tail()
+}
+
+Piano -[hidden]right- Note
+
+Note <|-- White
+Note <|-- Black
+Piano *-- Note
+@enduml

@@ -25,8 +25,8 @@ while True:
 
     method, msg_len = struct.unpack('B'*header_len, header)
 
-    while ser.in_waiting < msg_len : pass
     data = ser.read(msg_len)
+    if len(data) != msg_len: continue 
 
     if method == Method.ON :
         value, r, g, b = struct.unpack('B'*msg_len, data)

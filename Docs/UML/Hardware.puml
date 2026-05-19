@@ -1,0 +1,104 @@
+
+@startuml
+!include https://raw.githubusercontent.com/bschwarz/puml-themes/refs/heads/master/themes/materia-outline/puml-theme-materia-outline.puml
+'skinparam classAttributeIconSize 0
+hide circle
+
+skinparam roundcorner           15
+skinparam ParticipantPadding    20
+skinparam BoxPadding            10
+skinparam Padding               3
+
+class Piano {
+  +SERIAL: SerialCom
+  +{static} sounds: SoundFont
+  -{static} midiDevice: MidiConnection
+  --
+  +setListeners(): void
+}
+
+class DeviceSelectEvent {
+  ~selectedDevice: Info
+  --
+  +DeviceSelectEvent(info: Info)
+  +handle(event: MouseEvent): void
+}
+
+class MidiCommandEvent {
+  -note: Note
+  -command: int
+  --
+  +MidiCommandEvent(note: Note, command: int)
+  +run(): void
+}
+class SoundFont {
+  -INSTRUMENTS: Instrument
+  -BANK: Soundbank
+  -{static} SYNTH: Synthesizer
+  +currentInstrument: Instrument
+  -channels: MidiChannel
+  --
+  +SoundFont()
+  +{static} synthReceiver(): MidiReceiver
+  -initCurrentInstrument(): void
+  -setSoundBank(resource: URL): Soundbank
+  -{static} setSynthesizer(): Synthesizer
+  +playNote(noteNumber: int, velocity: int): void
+
+  +getResources(): SoundbankResource[]
+  +getInstruments(): Instrument[]
+  +getInstrument(patch: Patch): Instrument
+}
+
+class MidiConnection {
+  -{static} midiDevices: Info
+  +{static} inputDevices: ArrayList<Info>
+  -{static} connectedMidi: MidiDevice
+  -{static} output: Receiver
+  --
+  -{static} getAllAvailableDevices(): ArrayList<Info>
+  +{static} openMidiConnection(info: Info): void
+  -{static} getConnectedMidiDevice(info: Info): MidiDevice
+}
+
+class MidiReceiver {
+  -synthReceiver: Receiver
+  --
+  ~MidiReceiver(receiver: Receiver)
+  +send(): void
+  +close(): void
+}
+
+class SerialCom {
+  -comPort: SerialPort
+  -connection: boolean
+  --
+  +SerialCom()
+  -getComPort(): SerialPort
+  -confComPort(): void
+  -openComPort(): boolean
+  -comPortFail(): void
+  +sendData(method: Method): void
+  +closeCom(): void
+}
+
+class Note {
+  -PIANO: Piano
+  --
+  -on(): void
+  -off(): void
+}
+Note -[hidden]right- Piano
+SoundFont -[hidden]up- MidiReceiver
+MidiReceiver -[hidden]up- DeviceSelectEvent
+
+
+Note *-- Piano
+Piano o-- Note
+Piano *-- SerialCom
+
+MidiCommandEvent *-- Note
+Piano *-- MidiConnection
+Piano *-- SoundFont
+SoundFont ..> MidiReceiver
+@enduml
