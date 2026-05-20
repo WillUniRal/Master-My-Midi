@@ -8,5 +8,8 @@ It connects to a raspberry pi over UART
 
 https://youtu.be/Bsn5Ah3Ry4M?si=-JWzSpYR34RFO65G
 
-### notice
+### Notice
 This software artifact is in a prototype phase, there are bugs
+
+### Copyright Attributions
+The sound font used is https://www.polyphone.io/en/soundfonts/pianos/303-akai-steinway-iii licenced under CC
